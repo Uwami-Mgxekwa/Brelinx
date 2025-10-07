@@ -5,12 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brelinx - IT Services & Software Solutions</title>
     
-    <link rel="shortcut icon" href="./assets/logo.png" type="image/x-icon"><!-- Standard favicon for most browsers -->
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/logo.png">
+    <!-- Favicon for all browsers -->
+    <link rel="icon" type="image/x-icon" href="./assets/logo.png    ">
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/logo.png">
 
-    <!-- Apple Touch Icons for iOS devices -->
+    <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/logo.png">
+
+    <!-- Android Chrome -->
+    <link rel="icon" type="image/png" sizes="192x192" href="./assets/logo.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="./assets/logo.png">
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Theme Color for Mobile Browsers -->
+    <meta name="theme-color" content="#2d8a5f">
+    <meta name="msapplication-TileColor" content="#2d8a5f">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Brelinx offers innovative IT services, software development, mobile applications, programming coaching, and assignment help. Transform your business with cutting-edge technology.">
+    <meta name="keywords" content="IT services, software development, mobile apps, programming coaching, assignment help, cloud solutions, cybersecurity">
+    <meta name="author" content="Brelinx">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://brelinx.com">
+    <meta property="og:title" content="Brelinx - IT Services & Software Solutions">
+    <meta property="og:description" content="Innovative IT solutions for your business growth. Software development, coaching, and more.">
+    <meta property="og:image" content="https://brelinx.com/assets/logo.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://brelinx.com">
+    <meta name="twitter:title" content="Brelinx - IT Services & Software Solutions">
+    <meta name="twitter:description" content="Innovative IT solutions for your business growth. Software development, coaching, and more.">
+    <meta name="twitter:image" content="https://yourdomain.com/assets/logo.png">
+
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -27,6 +59,7 @@
                         <li><a href="#home" class="nav-link">Home</a></li>
                         <li><a href="#services" class="nav-link">Services</a></li>
                         <li><a href="#about" class="nav-link">About</a></li>
+                        <li><a href="#blog" class="nav-link">Blog</a></li>
                         <li><a href="#contact" class="nav-link">Contact</a></li>
                     </ul>
                     <div class="nav-controls">
@@ -227,6 +260,137 @@
         </div>
     </section>
 
+    <!-- Blog Section -->
+    <section id="blog" class="blog">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Latest Insights</h2>
+                <p class="section-subtitle">Tips, tutorials, and tech insights from our experts</p>
+            </div>
+            <div class="blog-filters">
+                <button class="filter-btn active" data-filter="all">All Posts</button>
+                <button class="filter-btn" data-filter="tutorials">Tutorials</button>
+                <button class="filter-btn" data-filter="tips">Tips & Tricks</button>
+                <button class="filter-btn" data-filter="news">Tech News</button>
+            </div>
+            <div class="blog-grid">
+                <article class="blog-card" data-category="tutorials">
+                    <div class="blog-image">
+                        <div class="blog-image-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="blog-category">Tutorial</div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 5, 2025</span>
+                            <span><i class="far fa-clock"></i> 8 min read</span>
+                        </div>
+                        <h3>Getting Started with React Hooks</h3>
+                        <p>Learn how to use React Hooks to build modern, functional components. This comprehensive guide covers useState, useEffect, and custom hooks.</p>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card" data-category="tips">
+                    <div class="blog-image">
+                        <div class="blog-image-placeholder">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="blog-category">Tips</div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 3, 2025</span>
+                            <span><i class="far fa-clock"></i> 5 min read</span>
+                        </div>
+                        <h3>10 Python Tips for Beginners</h3>
+                        <p>Boost your Python programming skills with these essential tips and best practices that every beginner should know.</p>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card" data-category="news">
+                    <div class="blog-image">
+                        <div class="blog-image-placeholder">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="blog-category">News</div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 1, 2025</span>
+                            <span><i class="far fa-clock"></i> 6 min read</span>
+                        </div>
+                        <h3>The Future of AI in Software Development</h3>
+                        <p>Explore how artificial intelligence is transforming the software development landscape and what it means for developers.</p>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card" data-category="tutorials">
+                    <div class="blog-image">
+                        <div class="blog-image-placeholder">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="blog-category">Tutorial</div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Sep 28, 2025</span>
+                            <span><i class="far fa-clock"></i> 10 min read</span>
+                        </div>
+                        <h3>Building Your First Mobile App</h3>
+                        <p>Step-by-step guide to creating a cross-platform mobile application using React Native. Perfect for beginners!</p>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card" data-category="tips">
+                    <div class="blog-image">
+                        <div class="blog-image-placeholder">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="blog-category">Tips</div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Sep 25, 2025</span>
+                            <span><i class="far fa-clock"></i> 7 min read</span>
+                        </div>
+                        <h3>Cybersecurity Best Practices for 2025</h3>
+                        <p>Essential security measures every business should implement to protect their digital assets and customer data.</p>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card" data-category="tutorials">
+                    <div class="blog-image">
+                        <div class="blog-image-placeholder">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="blog-category">Tutorial</div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Sep 22, 2025</span>
+                            <span><i class="far fa-clock"></i> 12 min read</span>
+                        </div>
+                        <h3>Mastering SQL Queries</h3>
+                        <p>From basic SELECT statements to complex JOINs and subqueries - become proficient in SQL database management.</p>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+            <div class="blog-cta">
+                <p>Want to stay updated with our latest content?</p>
+                <a href="https://wa.me/27785002274?text=Hi%2C%20I%27d%20like%20to%20subscribe%20to%20your%20blog" target="_blank" class="btn btn-primary">
+                    <i class="fab fa-whatsapp"></i> Subscribe via WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
@@ -267,7 +431,7 @@
                     </div>
                 </div>
                 <div class="contact-form-wrapper">
-                    <form class="contact-form" id="contactForm">
+                    <div class="contact-form" id="contactForm">
                         <div class="form-group">
                             <input type="text" id="name" name="name" placeholder="Your Name" required>
                         </div>
@@ -277,8 +441,8 @@
                         <div class="form-group">
                             <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-submit">Send Message</button>
-                    </form>
+                        <button type="button" class="btn btn-primary btn-submit" id="submitBtn">Send Message</button>
+                    </div>
                 </div>
             </div>
             <div class="map-container">
@@ -311,6 +475,7 @@
                         <li><a href="#home">Home</a></li>
                         <li><a href="#services">Services</a></li>
                         <li><a href="#about">About</a></li>
+                        <li><a href="#blog">Blog</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>

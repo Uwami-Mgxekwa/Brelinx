@@ -154,25 +154,32 @@ contactItems.forEach((item, index) => {
 // Contact Form Handling
 // ========================================
 
-const contactForm = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
 
-contactForm.addEventListener('submit', (e) => {
+submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
     
-    const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        message: document.getElementById('message').value
-    };
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
     
-    // Show success message
-    showNotification('Message sent successfully! We will get back to you soon.', 'success');
-    
-    // Reset form
-    contactForm.reset();
-    
-    // In a real application, you would send this data to a server
-    console.log('Form submitted:', formData);
+    if (name && email && message) {
+        // Format WhatsApp message
+        const whatsappMessage = `Hi, my name is ${name}. Email: ${email}. Message: ${message}`;
+        const encodedMessage = encodeURIComponent(whatsappMessage);
+        const whatsappUrl = `https://wa.me/27785002274?text=${encodedMessage}`;
+        
+        // Open WhatsApp
+        window.open(whatsappUrl, '_blank');
+        
+        // Show success notification
+        showNotification('Redirecting to WhatsApp...', 'success');
+        
+        // Reset form
+        contactForm.reset();
+    } else {
+        showNotification('Please fill in all fields', 'error');
+    }
 });
 
 // ========================================
@@ -363,6 +370,50 @@ if (logo) {
         e.preventDefault();
     });
 }
+
+// ========================================
+// Blog Filter Functionality
+// ========================================
+
+const filterBtns = document.querySelectorAll('.filter-btn');
+const blogCards = document.querySelectorAll('.blog-card');
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const filterValue = btn.getAttribute('data-filter');
+        
+        // Update active button
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Filter blog cards
+        blogCards.forEach((card, index) => {
+            const category = card.getAttribute('data-category');
+            
+            // Hide all cards first
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.8)';
+            
+            setTimeout(() => {
+                if (filterValue === 'all' || category === filterValue) {
+                    card.style.display = 'block';
+                    // Stagger animation for visible cards
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                    }, index * 50);
+                } else {
+                    card.style.display = 'none';
+                }
+            }, 300);
+        });
+    });
+});
+
+// Add transition styles to blog cards
+blogCards.forEach(card => {
+    card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+});
 
 // ========================================
 // Console Message

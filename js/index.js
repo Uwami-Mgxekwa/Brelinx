@@ -421,3 +421,202 @@ blogCards.forEach(card => {
 
 console.log('%c🌐 Brelinx Website', 'color: #2d8a5f; font-size: 20px; font-weight: bold;');
 console.log('%cDeveloped with ❤️ for Brelinx IT Services', 'color: #4a4a4a; font-size: 12px;');
+
+// ========================================
+// Chatbot Functionality
+// ========================================
+
+const chatbotButton = document.getElementById('chatbotButton');
+const chatbotContainer = document.getElementById('chatbotContainer');
+const chatbotMessages = document.getElementById('chatbotMessages');
+const chatbotInput = document.getElementById('chatbotInput');
+const chatbotSend = document.getElementById('chatbotSend');
+
+// Toggle chatbot
+chatbotButton.addEventListener('click', () => {
+    chatbotButton.classList.toggle('active');
+    chatbotContainer.classList.toggle('active');
+    if (chatbotContainer.classList.contains('active')) {
+        chatbotInput.focus();
+    }
+});
+
+// Close chatbot when clicking outside
+document.addEventListener('click', (e) => {
+    if (!chatbotContainer.contains(e.target) && !chatbotButton.contains(e.target)) {
+        chatbotButton.classList.remove('active');
+        chatbotContainer.classList.remove('active');
+    }
+});
+
+// Knowledge base
+const knowledgeBase = {
+    greetings: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening'],
+    services: ['service', 'services', 'what do you do', 'what can you do', 'offerings'],
+    software: ['software', 'development', 'application', 'app'],
+    mobile: ['mobile', 'android', 'ios', 'app'],
+    coaching: ['coaching', 'learn', 'teach', 'programming', 'code', 'training'],
+    assignment: ['assignment', 'homework', 'help', 'project', 'study'],
+    cloud: ['cloud', 'aws', 'azure', 'hosting'],
+    security: ['security', 'cybersecurity', 'protect', 'secure'],
+    contact: ['contact', 'phone', 'email', 'reach', 'call', 'whatsapp'],
+    pricing: ['price', 'cost', 'how much', 'pricing', 'rates', 'fee'],
+    location: ['where', 'location', 'address', 'office'],
+    about: ['about', 'who are you', 'company', 'brelinx']
+};
+
+const responses = {
+    greetings: "Hello! 👋 Welcome to Brelinx. I'm here to help you with any questions about our IT services. What would you like to know?",
+    
+    services: "We offer a comprehensive range of IT services:\n\n🖥️ Software Development\n📱 Mobile Applications\n👨‍🏫 Programming Coaching\n📚 Assignment Help\n☁️ Cloud Solutions\n🔒 Cybersecurity\n💾 Data Management\n🛠️ IT Support 24/7\n\nWhich service interests you?",
+    
+    software: "Our Software Development services include:\n\n✨ Custom software solutions\n✨ Web applications\n✨ Enterprise systems\n✨ API development\n✨ System integration\n\nWe design solutions tailored to streamline your business operations and drive growth. Would you like to discuss your project?",
+    
+    mobile: "We build exceptional Mobile Applications:\n\n📱 Native iOS & Android apps\n📱 Cross-platform solutions\n📱 User-friendly interfaces\n📱 Performance optimized\n\nWe create apps that deliver outstanding user experiences. Interested in building an app?",
+    
+    coaching: "Our Programming Coaching services:\n\n👨‍💻 One-on-one online sessions\n👨‍💻 Personalized learning pace\n👨‍💻 Languages: Python, JavaScript, Java, React, SQL, HTML/CSS\n👨‍💻 Beginner to advanced levels\n👨‍💻 Real-world projects\n👨‍💻 Flexible scheduling\n\nReady to start your coding journey?",
+    
+    assignment: "We provide Assignment Help for:\n\n📚 Understanding complex concepts\n📚 Code debugging & optimization\n📚 Project completion support\n📚 Exam preparation\n📚 Portfolio projects\n\nWe help you learn and complete your work with confidence. Need help with an assignment?",
+    
+    cloud: "Our Cloud Solutions include:\n\n☁️ Cloud infrastructure setup\n☁️ Migration services\n☁️ AWS, Azure, Google Cloud\n☁️ Scalable architecture\n☁️ Cost optimization\n\nTransform your business with modern cloud technology!",
+    
+    security: "Cybersecurity Services:\n\n🔒 Security audits\n🔒 Threat monitoring\n🔒 Data protection\n🔒 Compliance support\n🔒 Incident response\n\nProtect your business with comprehensive security solutions!",
+    
+    contact: "Get in touch with us:\n\n📞 Phone: +27 63 572 2080\n💬 WhatsApp: +27 78 500 2274\n📍 Location: The Glen Road, Johannesburg, GP 2090\n\nYou can also fill out our contact form on the website. How would you prefer to reach us?",
+    
+    pricing: "Our pricing varies based on:\n\n💰 Project scope and complexity\n💰 Service type\n💰 Timeline\n💰 Support requirements\n\nFor coaching: We offer flexible hourly rates.\n\nContact us for a personalized quote! Would you like to discuss your specific needs?",
+    
+    location: "We're located at:\n\n📍 The Glen Road\nJohannesburg, GP 2090\nSouth Africa 🇿🇦\n\nWe serve clients globally with online services. Visit our Contact section for the map!",
+    
+    about: "Brelinx is your trusted IT partner! 🚀\n\nWe're passionate about delivering innovative IT services and software solutions that transform businesses.\n\n✅ 100+ Projects Completed\n✅ 50+ Happy Clients\n✅ 24/7 Support Available\n\nOur commitment to excellence and customer satisfaction sets us apart. What would you like to know more about?",
+    
+    default: "I'm here to help! I can answer questions about:\n\n• Our services\n• Programming coaching\n• Assignment help\n• Pricing\n• Contact information\n• And more!\n\nWhat would you like to know? Or chat with us directly on WhatsApp!"
+};
+
+// Find best match
+function findBestMatch(userMessage) {
+    const message = userMessage.toLowerCase();
+    
+    for (const [category, keywords] of Object.entries(knowledgeBase)) {
+        if (keywords.some(keyword => message.includes(keyword))) {
+            return category;
+        }
+    }
+    
+    return 'default';
+}
+
+// Add message to chat
+function addMessage(message, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = isUser ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+    
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    content.textContent = message;
+    content.style.whiteSpace = 'pre-line';
+    
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(content);
+    
+    chatbotMessages.appendChild(messageDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
+// Show typing indicator
+function showTyping() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message bot';
+    typingDiv.id = 'typing-indicator';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = '<i class="fas fa-robot"></i>';
+    
+    const indicator = document.createElement('div');
+    indicator.className = 'typing-indicator';
+    indicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+    
+    typingDiv.appendChild(avatar);
+    typingDiv.appendChild(indicator);
+    chatbotMessages.appendChild(typingDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
+// Remove typing indicator
+function removeTyping() {
+    const typing = document.getElementById('typing-indicator');
+    if (typing) typing.remove();
+}
+
+// Handle user message
+function handleUserMessage(message) {
+    if (!message.trim()) return;
+    
+    // Add user message
+    addMessage(message, true);
+    chatbotInput.value = '';
+    
+    // Show typing
+    showTyping();
+    
+    // Simulate thinking delay
+    setTimeout(() => {
+        removeTyping();
+        const category = findBestMatch(message);
+        const response = responses[category];
+        addMessage(response);
+        
+        // Add quick replies after certain responses
+        if (category === 'services' || category === 'default') {
+            addQuickReplies();
+        }
+    }, 1000 + Math.random() * 1000);
+}
+
+// Add quick replies
+function addQuickReplies() {
+    const lastMessage = chatbotMessages.lastElementChild;
+    if (lastMessage && lastMessage.classList.contains('bot')) {
+        const quickRepliesDiv = document.createElement('div');
+        quickRepliesDiv.className = 'quick-replies';
+        quickRepliesDiv.innerHTML = `
+            <button class="quick-reply-btn" data-message="Tell me about programming coaching">Coaching</button>
+            <button class="quick-reply-btn" data-message="How can I contact you?">Contact</button>
+            <button class="quick-reply-btn" data-message="What are your prices?">Pricing</button>
+        `;
+        
+        const messageContent = lastMessage.querySelector('.message-content') || lastMessage.lastElementChild;
+        messageContent.parentElement.appendChild(quickRepliesDiv);
+        
+        // Add event listeners to new quick reply buttons
+        quickRepliesDiv.querySelectorAll('.quick-reply-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                handleUserMessage(btn.dataset.message);
+            });
+        });
+    }
+}
+
+// Send message
+chatbotSend.addEventListener('click', () => {
+    handleUserMessage(chatbotInput.value);
+});
+
+// Send on Enter
+chatbotInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        handleUserMessage(chatbotInput.value);
+    }
+});
+
+// Quick reply buttons
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('quick-reply-btn')) {
+        handleUserMessage(e.target.dataset.message);
+    }
+});

@@ -512,6 +512,47 @@
     <a href="https://wa.me/27785002274" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
+	
+	<!-- Chatbot -->
+    <button class="chatbot-button" id="chatbotButton" aria-label="Open chatbot">
+        <i class="fas fa-comments chat-icon"></i>
+        <i class="fas fa-times close-icon"></i>
+    </button>
+
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            <div class="chatbot-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="chatbot-info">
+                <h3>Brelinx Assistant</h3>
+                <p>Online • Ready to help!</p>
+            </div>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div>
+                    <div class="message-content">
+                        Hi! 👋 I'm the Brelinx Assistant. How can I help you today?
+                    </div>
+                    <div class="quick-replies">
+                        <button class="quick-reply-btn" data-message="What services do you offer?">Our Services</button>
+                        <button class="quick-reply-btn" data-message="Tell me about programming coaching">Coaching</button>
+                        <button class="quick-reply-btn" data-message="How can I contact you?">Contact</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-input-area">
+            <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your message...">
+            <button class="chatbot-send-btn" id="chatbotSend">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
 
     <script src="./js/index.js"></script>
 </body>

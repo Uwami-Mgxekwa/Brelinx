@@ -1615,12 +1615,12 @@ section {
     .chatbot-container {
         width: calc(100vw - 40px);
         right: 20px;
-        bottom: 130px; /* Changed from 90px to 130px */
+        bottom: 130px; 
         max-height: 500px;
     }
 
     .chatbot-button {
-        bottom: 20px; /* Changed from 90px to 20px */
+        bottom: 20px; 
         right: 20px;
         width: 50px;
         height: 50px;
@@ -1631,21 +1631,18 @@ section {
     }
     
     .whatsapp-float {
-        bottom: 90px; /* Changed from 20px to 90px to avoid overlap */
+        bottom: 90px; 
     }
 }
 
 @media (max-width: 768px) {
-    /* ... existing mobile styles above ... */
-    
-    /* Add extra padding to chatbot input area for better touch targets */
     .chatbot-input-area {
-        padding: 20px; /* Increased from 15px 20px */
+        padding: 20px;
     }
     
     .chatbot-send-btn {
-        width: 50px; /* Increased from 45px */
-        height: 50px; /* Increased from 45px */
-        flex-shrink: 0; /* Prevent button from shrinking */
+        width: 50px; 
+        height: 50px;
+        flex-shrink: 0; 
     }
 }

@@ -1634,3 +1634,18 @@ section {
         bottom: 90px; /* Changed from 20px to 90px to avoid overlap */
     }
 }
+
+@media (max-width: 768px) {
+    /* ... existing mobile styles above ... */
+    
+    /* Add extra padding to chatbot input area for better touch targets */
+    .chatbot-input-area {
+        padding: 20px; /* Increased from 15px 20px */
+    }
+    
+    .chatbot-send-btn {
+        width: 50px; /* Increased from 45px */
+        height: 50px; /* Increased from 45px */
+        flex-shrink: 0; /* Prevent button from shrinking */
+    }
+}

@@ -361,15 +361,15 @@ window.addEventListener('load', () => {
 });
 
 // ========================================
-// Prevent Right Click on Logo (Optional)
+// Logo Text Selection Prevention (Optional)
 // ========================================
 
-const logo = document.querySelector('.logo img');
-if (logo) {
-    logo.addEventListener('contextmenu', (e) => {
+const logoText = document.querySelectorAll('.logo-text');
+logoText.forEach(logo => {
+    logo.addEventListener('selectstart', (e) => {
         e.preventDefault();
     });
-}
+});
 
 // ========================================
 // Blog Filter Functionality

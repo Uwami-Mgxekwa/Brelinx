@@ -85,14 +85,52 @@ body {
     align-items: center;
 }
 
-.logo img {
-    height: 40px;
-    width: auto;
-    transition: var(--transition);
+.logo {
+    display: flex;
+    align-items: center;
 }
 
-.logo img:hover {
+.logo-text {
+    font-size: 1.75rem;
+    font-weight: 800;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: var(--transition);
+    letter-spacing: -0.5px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.logo-text:hover {
     transform: scale(1.05);
+}
+
+.logo-text:hover .logo-x {
+    animation: logoXPulse 0.6s ease;
+}
+
+@keyframes logoXPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.logo-brelin {
+    color: var(--text-primary);
+    position: relative;
+}
+
+
+
+.logo-x {
+    color: var(--primary-color);
+    font-weight: 900;
 }
 
 .nav-menu {
@@ -1039,9 +1077,12 @@ section {
     margin-bottom: 2rem;
 }
 
-.footer-logo img {
-    height: 40px;
+.footer-logo {
     margin-bottom: 1rem;
+}
+
+.footer-logo .logo-text {
+    font-size: 1.5rem;
 }
 
 .footer-section h4 {

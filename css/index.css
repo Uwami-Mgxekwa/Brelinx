@@ -808,6 +808,7 @@ section {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
+    align-items: stretch;
 }
 
 .testimonial-card {
@@ -819,6 +820,9 @@ section {
     border: 2px solid var(--border-color);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
 }
 
 .testimonial-card::before {
@@ -895,6 +899,7 @@ section {
     font-size: 1rem;
     position: relative;
     z-index: 1;
+    flex-grow: 1;
 }
 
 .testimonials-cta {

@@ -372,47 +372,16 @@ logoText.forEach(logo => {
 });
 
 // ========================================
-// Blog Filter Functionality
+// Testimonials Animation
 // ========================================
 
-const filterBtns = document.querySelectorAll('.filter-btn');
-const blogCards = document.querySelectorAll('.blog-card');
+const testimonialCards = document.querySelectorAll('.testimonial-card');
 
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const filterValue = btn.getAttribute('data-filter');
-        
-        // Update active button
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        // Filter blog cards
-        blogCards.forEach((card, index) => {
-            const category = card.getAttribute('data-category');
-            
-            // Hide all cards first
-            card.style.opacity = '0';
-            card.style.transform = 'scale(0.8)';
-            
-            setTimeout(() => {
-                if (filterValue === 'all' || category === filterValue) {
-                    card.style.display = 'block';
-                    // Stagger animation for visible cards
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'scale(1)';
-                    }, index * 50);
-                } else {
-                    card.style.display = 'none';
-                }
-            }, 300);
-        });
-    });
-});
-
-// Add transition styles to blog cards
-blogCards.forEach(card => {
-    card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+testimonialCards.forEach((card, index) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+    observer.observe(card);
 });
 
 // ========================================

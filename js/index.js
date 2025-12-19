@@ -763,6 +763,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const brandVideo = document.querySelector('.brand-video');
     
     if (brandVideo) {
+        // Disable picture-in-picture
+        brandVideo.disablePictureInPicture = true;
+        
+        // Prevent PiP from being triggered
+        brandVideo.addEventListener('enterpictureinpicture', (e) => {
+            e.preventDefault();
+            document.exitPictureInPicture();
+        });
+        
         // iPhone-specific video handling
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
         

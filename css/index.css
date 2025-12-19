@@ -569,9 +569,9 @@ section {
 .partner-logo {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 0.5rem;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 1rem;
     padding: 1.5rem 2.5rem;
     background-color: var(--bg-primary);
     border-radius: 12px;
@@ -596,7 +596,6 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 0.5rem;
     transition: var(--transition);
     flex-shrink: 0;
     aspect-ratio: 1;

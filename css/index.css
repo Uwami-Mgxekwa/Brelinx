@@ -570,6 +570,8 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
     padding: 1rem 2rem;
     background-color: var(--bg-primary);
     border-radius: 12px;
@@ -586,12 +588,36 @@ section {
     border-color: var(--primary-color);
 }
 
-.partner-logo .logo-text {
+.partner-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    transition: var(--transition);
+    flex-shrink: 0;
+    aspect-ratio: 1;
+}
+
+.partner-logo:hover .partner-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.partner-icon i {
     font-size: 1.25rem;
+    color: white;
+}
+
+.partner-logo .logo-text {
+    font-size: 1rem;
     font-weight: 700;
     color: var(--text-primary);
     text-align: center;
     letter-spacing: -0.5px;
+    line-height: 1.2;
 }
 
 .partner-logo .logo-accent {

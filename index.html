@@ -202,8 +202,24 @@
                     </div>
                 </div>
                 <div class="about-image">
-                    <div class="image-placeholder">
-                        <i class="fas fa-laptop-code"></i>
+                    <div class="video-container">
+                        <video 
+                            class="brand-video"
+                            autoplay 
+                            muted 
+                            loop 
+                            playsinline
+                            preload="metadata"
+                            poster="./assets/logo.png"
+                            aria-label="Brelinx brand video">
+                            <source src="./assets/brelinx video.mp4" type="video/mp4">
+                            <!-- Fallback for browsers that don't support video -->
+                            <div class="video-fallback">
+                                <div class="image-placeholder">
+                                    <i class="fas fa-laptop-code"></i>
+                                </div>
+                            </div>
+                        </video>
                     </div>
                 </div>
             </div>

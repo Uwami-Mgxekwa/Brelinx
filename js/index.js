@@ -754,3 +754,62 @@ document.addEventListener('click', (e) => {
         handleUserMessage(e.target.dataset.message);
     }
 });
+
+// ========================================
+// Brand Video Controls & iPhone Optimization
+// ========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const brandVideo = document.querySelector('.brand-video');
+    
+    if (brandVideo) {
+        // iPhone-specific video handling
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        
+        if (isIOS) {
+            // Force video to load on iOS
+            brandVideo.load();
+            
+            // Handle iOS autoplay restrictions
+            const playVideo = () => {
+                brandVideo.play().catch(e => {
+                    console.log('Video autoplay prevented:', e);
+                });
+            };
+            
+            // Try to play video on user interaction
+            document.addEventListener('touchstart', playVideo, { once: true });
+            document.addEventListener('click', playVideo, { once: true });
+        }
+        
+        // Handle video loading errors
+        brandVideo.addEventListener('error', (e) => {
+            console.log('Video loading error:', e);
+            // Show fallback if video fails to load
+            const fallback = document.querySelector('.video-fallback');
+            if (fallback) {
+                fallback.style.display = 'flex';
+                brandVideo.style.display = 'none';
+            }
+        });
+        
+        // Optimize video performance
+        brandVideo.addEventListener('loadeddata', () => {
+            // Video is ready to play
+            brandVideo.style.opacity = '1';
+        });
+        
+        // Pause video when not in viewport (performance optimization)
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    brandVideo.play().catch(e => console.log('Play failed:', e));
+                } else {
+                    brandVideo.pause();
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        videoObserver.observe(brandVideo);
+    }
+});

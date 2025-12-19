@@ -635,11 +635,6 @@ section {
     }
 }
 
-/* Pause animation on hover */
-.partners-carousel:hover .partners-track {
-    animation-play-state: paused;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .partner-item {

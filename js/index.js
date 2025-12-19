@@ -763,6 +763,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const brandVideo = document.querySelector('.brand-video');
     
     if (brandVideo) {
+        console.log('Video element found');
+        
         // Disable picture-in-picture
         brandVideo.disablePictureInPicture = true;
         
@@ -770,6 +772,32 @@ document.addEventListener('DOMContentLoaded', () => {
         brandVideo.addEventListener('enterpictureinpicture', (e) => {
             e.preventDefault();
             document.exitPictureInPicture();
+        });
+        
+        // Debug video loading
+        brandVideo.addEventListener('loadstart', () => {
+            console.log('Video loading started');
+        });
+        
+        brandVideo.addEventListener('canplay', () => {
+            console.log('Video can play');
+        });
+        
+        brandVideo.addEventListener('loadeddata', () => {
+            console.log('Video data loaded');
+            brandVideo.style.opacity = '1';
+        });
+        
+        // Handle video loading errors
+        brandVideo.addEventListener('error', (e) => {
+            console.log('Video loading error:', e);
+            console.log('Video error details:', brandVideo.error);
+            // Show fallback if video fails to load
+            const fallback = document.querySelector('.video-fallback');
+            if (fallback) {
+                fallback.style.display = 'flex';
+                brandVideo.style.display = 'none';
+            }
         });
         
         // iPhone-specific video handling

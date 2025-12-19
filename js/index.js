@@ -385,6 +385,112 @@ testimonialCards.forEach((card, index) => {
 });
 
 // ========================================
+// Tech News Blog Functionality
+// ========================================
+
+const NEWS_API_KEY = '9d147cd7390443e281284123aa6160df';
+const NEWS_API_URL = 'https://newsapi.org/v2/top-headlines';
+
+async function fetchTechNews() {
+    const blogLoading = document.getElementById('blogLoading');
+    const blogError = document.getElementById('blogError');
+    const blogGrid = document.getElementById('blogGrid');
+    
+    try {
+        // Show loading state
+        blogLoading.style.display = 'block';
+        blogError.style.display = 'none';
+        blogGrid.innerHTML = '';
+        
+        const response = await fetch(`${NEWS_API_URL}?category=technology&country=us&pageSize=6&apiKey=${NEWS_API_KEY}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.status === 'ok' && data.articles && data.articles.length > 0) {
+            displayTechNews(data.articles);
+            blogLoading.style.display = 'none';
+        } else {
+            throw new Error('No articles found');
+        }
+        
+    } catch (error) {
+        console.error('Error fetching tech news:', error);
+        blogLoading.style.display = 'none';
+        blogError.style.display = 'block';
+    }
+}
+
+function displayTechNews(articles) {
+    const blogGrid = document.getElementById('blogGrid');
+    
+    articles.forEach((article, index) => {
+        // Skip articles without title or description
+        if (!article.title || !article.description) return;
+        
+        const articleCard = document.createElement('article');
+        articleCard.className = 'blog-card';
+        articleCard.style.opacity = '0';
+        articleCard.style.transform = 'translateY(30px)';
+        
+        const publishedDate = new Date(article.publishedAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+        
+        const sourceName = article.source?.name || 'Tech News';
+        const imageUrl = article.urlToImage;
+        const title = article.title.length > 80 ? article.title.substring(0, 80) + '...' : article.title;
+        const description = article.description.length > 150 ? article.description.substring(0, 150) + '...' : article.description;
+        
+        articleCard.innerHTML = `
+            <div class="blog-image">
+                ${imageUrl ? 
+                    `<img src="${imageUrl}" alt="${title}" onerror="this.parentElement.innerHTML='<div class=\\'blog-image-placeholder\\'><i class=\\'fas fa-newspaper\\'></i></div>'">` :
+                    `<div class="blog-image-placeholder"><i class="fas fa-newspaper"></i></div>`
+                }
+                <div class="blog-source">${sourceName}</div>
+            </div>
+            <div class="blog-content">
+                <div class="blog-meta">
+                    <div class="blog-date">
+                        <i class="far fa-calendar"></i>
+                        <span>${publishedDate}</span>
+                    </div>
+                </div>
+                <h3>${title}</h3>
+                <p>${description}</p>
+                <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="blog-link">
+                    Read Full Article <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        `;
+        
+        blogGrid.appendChild(articleCard);
+        
+        // Animate card appearance
+        setTimeout(() => {
+            articleCard.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            articleCard.style.opacity = '1';
+            articleCard.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+}
+
+// Load tech news when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Add a small delay to let other elements load first
+    setTimeout(fetchTechNews, 1000);
+});
+
+// Refresh news every 30 minutes (optional)
+setInterval(fetchTechNews, 30 * 60 * 1000);
+
+// ========================================
 // Console Message
 // ========================================
 

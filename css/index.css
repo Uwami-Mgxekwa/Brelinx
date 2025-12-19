@@ -1484,6 +1484,10 @@ section {
         grid-template-columns: 1fr;
     }
 
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+
     .footer-content {
         grid-template-columns: 1fr;
     }

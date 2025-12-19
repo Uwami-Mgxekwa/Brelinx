@@ -487,8 +487,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(fetchTechNews, 1000);
 });
 
-// Refresh news every 30 minutes (optional)
-setInterval(fetchTechNews, 30 * 60 * 1000);
+// Refresh news every 24 hours
+setInterval(fetchTechNews, 24 * 60 * 60 * 1000);
 
 // ========================================
 // Console Message

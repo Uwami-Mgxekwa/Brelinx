@@ -74,6 +74,7 @@ document.addEventListener('click', (e) => {
     }
 });
 
+    
 // ========================================
 // Smooth Scrolling
 // ========================================
@@ -383,6 +384,170 @@ testimonialCards.forEach((card, index) => {
     card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
     observer.observe(card);
 });
+
+// ========================================
+// Tech News Blog Functionality
+// ========================================
+
+const NEWS_API_KEY = '9d147cd7390443e281284123aa6160df';
+const NEWS_API_URL = 'https://newsapi.org/v2/top-headlines';
+const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+
+async function fetchTechNews() {
+    const blogLoading = document.getElementById('blogLoading');
+    const blogError = document.getElementById('blogError');
+    const blogGrid = document.getElementById('blogGrid');
+    
+    try {
+        // Show loading state
+        blogLoading.style.display = 'block';
+        blogError.style.display = 'none';
+        blogGrid.innerHTML = '';
+        
+        const apiUrl = `${NEWS_API_URL}?category=technology&country=us&pageSize=6&apiKey=${NEWS_API_KEY}`;
+        const response = await fetch(`${CORS_PROXY}${encodeURIComponent(apiUrl)}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.status === 'ok' && data.articles && data.articles.length > 0) {
+            displayTechNews(data.articles);
+            blogLoading.style.display = 'none';
+        } else {
+            throw new Error('No articles found');
+        }
+        
+    } catch (error) {
+        console.error('Error fetching tech news:', error);
+        // Try fallback with mock data
+        displayFallbackNews();
+        blogLoading.style.display = 'none';
+    }
+}
+
+function displayTechNews(articles) {
+    const blogGrid = document.getElementById('blogGrid');
+    
+    articles.forEach((article, index) => {
+        // Skip articles without title or description
+        if (!article.title || !article.description) return;
+        
+        const articleCard = document.createElement('article');
+        articleCard.className = 'blog-card';
+        articleCard.style.opacity = '0';
+        articleCard.style.transform = 'translateY(30px)';
+        
+        const publishedDate = new Date(article.publishedAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+        
+        const sourceName = article.source?.name || 'Tech News';
+        const imageUrl = article.urlToImage;
+        const title = article.title.length > 80 ? article.title.substring(0, 80) + '...' : article.title;
+        const description = article.description.length > 150 ? article.description.substring(0, 150) + '...' : article.description;
+        
+        articleCard.innerHTML = `
+            <div class="blog-image">
+                ${imageUrl ? 
+                    `<img src="${imageUrl}" alt="${title}" onerror="this.parentElement.innerHTML='<div class=\\'blog-image-placeholder\\'><i class=\\'fas fa-newspaper\\'></i></div>'">` :
+                    `<div class="blog-image-placeholder"><i class="fas fa-newspaper"></i></div>`
+                }
+                <div class="blog-source">${sourceName}</div>
+            </div>
+            <div class="blog-content">
+                <div class="blog-meta">
+                    <div class="blog-date">
+                        <i class="far fa-calendar"></i>
+                        <span>${publishedDate}</span>
+                    </div>
+                </div>
+                <h3>${title}</h3>
+                <p>${description}</p>
+                <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="blog-link">
+                    Read Full Article <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        `;
+        
+        blogGrid.appendChild(articleCard);
+        
+        // Animate card appearance
+        setTimeout(() => {
+            articleCard.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            articleCard.style.opacity = '1';
+            articleCard.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+}
+
+function displayFallbackNews() {
+    const fallbackArticles = [
+        {
+            title: "AI Revolution: How Machine Learning is Transforming Industries",
+            description: "Artificial intelligence and machine learning continue to reshape business operations across sectors, from healthcare to finance.",
+            url: "https://techcrunch.com",
+            urlToImage: null,
+            publishedAt: new Date().toISOString(),
+            source: { name: "Tech News" }
+        },
+        {
+            title: "Cloud Computing Trends for 2024",
+            description: "Explore the latest developments in cloud infrastructure and how businesses are leveraging scalable solutions.",
+            url: "https://techcrunch.com",
+            urlToImage: null,
+            publishedAt: new Date().toISOString(),
+            source: { name: "Tech News" }
+        },
+        {
+            title: "Cybersecurity Best Practices in the Modern Era",
+            description: "Learn essential security measures to protect your digital assets and customer data from emerging threats.",
+            url: "https://techcrunch.com",
+            urlToImage: null,
+            publishedAt: new Date().toISOString(),
+            source: { name: "Tech News" }
+        },
+        {
+            title: "The Future of Mobile App Development",
+            description: "Cross-platform frameworks and native development continue to evolve, offering new possibilities for developers.",
+            url: "https://techcrunch.com",
+            urlToImage: null,
+            publishedAt: new Date().toISOString(),
+            source: { name: "Tech News" }
+        },
+        {
+            title: "Web Development Frameworks: What's New",
+            description: "Stay updated with the latest JavaScript frameworks and tools that are changing how we build web applications.",
+            url: "https://techcrunch.com",
+            urlToImage: null,
+            publishedAt: new Date().toISOString(),
+            source: { name: "Tech News" }
+        },
+        {
+            title: "Data Science and Analytics: Key Insights",
+            description: "Discover how data-driven decision making is helping businesses gain competitive advantages in their markets.",
+            url: "https://techcrunch.com",
+            urlToImage: null,
+            publishedAt: new Date().toISOString(),
+            source: { name: "Tech News" }
+        }
+    ];
+    
+    displayTechNews(fallbackArticles);
+}
+
+// Load tech news when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Add a small delay to let other elements load first
+    setTimeout(fetchTechNews, 1000);
+});
+
+// Refresh news every 24 hours
+setInterval(fetchTechNews, 24 * 60 * 60 * 1000);
 
 // ========================================
 // Console Message

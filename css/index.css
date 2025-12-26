@@ -2126,37 +2126,10 @@ section {
     object-fit: cover;
 }
 
-.contact-sub-illustrations {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.contact-sub-illustration {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    border-radius: 50%;
-    box-shadow: var(--shadow-md);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 2px solid var(--primary-color);
-    will-change: transform;
-}
-
-.contact-sub-illustration:hover {
-    transform: translateY(-3px) rotate(-3deg);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--accent-color);
-}
-
 /* Performance Optimizations */
 .hero-illustration,
-.services-illustration,
 .education-main-illustration,
-.education-sub-illustration,
-.contact-main-illustration,
-.contact-sub-illustration {
+.contact-main-illustration {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
     backface-visibility: hidden;
@@ -2180,49 +2153,30 @@ section {
         max-height: 220px;
     }
     
-    .services-illustrations {
-        gap: 1rem;
-    }
-    
-    .services-illustration {
-        width: 70px;
-        height: 70px;
-    }
-    
     .education-main-illustration {
         max-width: 280px;
         max-height: 220px;
-    }
-    
-    .education-sub-illustration {
-        width: 60px;
-        height: 60px;
     }
     
     .contact-main-illustration {
         max-width: 250px;
         max-height: 200px;
     }
-    
-    .contact-sub-illustration {
-        width: 50px;
-        height: 50px;
-    }
 }
 
 @media (max-width: 480px) {
-    .services-illustration {
-        width: 60px;
-        height: 60px;
+    .hero-illustration {
+        max-width: 250px;
+        max-height: 200px;
     }
     
-    .education-sub-illustration {
-        width: 50px;
-        height: 50px;
+    .education-main-illustration {
+        max-width: 250px;
+        max-height: 200px;
     }
     
-    .contact-sub-illustration {
-        width: 45px;
-        height: 45px;
+    .contact-main-illustration {
+        max-width: 220px;
+        max-height: 180px;
     }
 }

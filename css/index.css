@@ -2219,6 +2219,7 @@ section {
 
 .faq-question:hover {
     background-color: var(--bg-tertiary);
+    border-radius: 12px;
 }
 
 .faq-question h3 {

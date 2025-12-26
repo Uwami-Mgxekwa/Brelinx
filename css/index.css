@@ -2080,42 +2080,7 @@ section {
     max-height: 400px;
     height: auto;
     border-radius: 20px;
-    box-shadow: var(--shadow-lg);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    animation: float 6s ease-in-out infinite;
-    will-change: transform;
     object-fit: cover;
-}
-
-.hero-illustration:hover {
-    transform: scale(1.02);
-    box-shadow: 0 20px 40px rgba(45, 138, 95, 0.2);
-}
-
-/* Services Section Illustrations */
-.services-illustrations {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin: 2rem 0;
-    flex-wrap: wrap;
-}
-
-.services-illustration {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 50%;
-    box-shadow: var(--shadow-md);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 3px solid var(--primary-color);
-    will-change: transform;
-}
-
-.services-illustration:hover {
-    transform: translateY(-5px) rotate(3deg);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--accent-color);
 }
 
 /* About Section Illustrations */
@@ -2135,44 +2100,12 @@ section {
 }
 
 .education-main-illustration {
-    max-width: 250px;
-    max-height: 200px;
+    max-width: 320px;
+    max-height: 260px;
     width: 100%;
     height: auto;
     border-radius: 16px;
-    box-shadow: var(--shadow-lg);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     object-fit: cover;
-    will-change: transform;
-}
-
-.education-main-illustration:hover {
-    transform: scale(1.02);
-    box-shadow: 0 20px 40px rgba(45, 138, 95, 0.2);
-}
-
-.education-sub-illustrations {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.education-sub-illustration {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 50%;
-    box-shadow: var(--shadow-md);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 2px solid var(--primary-color);
-    will-change: transform;
-}
-
-.education-sub-illustration:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--accent-color);
 }
 
 /* Contact Section Illustrations */
@@ -2185,20 +2118,12 @@ section {
 }
 
 .contact-main-illustration {
-    max-width: 200px;
-    max-height: 160px;
+    max-width: 300px;
+    max-height: 240px;
     width: 100%;
     height: auto;
     border-radius: 16px;
-    box-shadow: var(--shadow-lg);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     object-fit: cover;
-    will-change: transform;
-}
-
-.contact-main-illustration:hover {
-    transform: scale(1.02);
-    box-shadow: 0 20px 40px rgba(45, 138, 95, 0.2);
 }
 
 .contact-sub-illustrations {
@@ -2265,8 +2190,8 @@ section {
     }
     
     .education-main-illustration {
-        max-width: 200px;
-        max-height: 160px;
+        max-width: 280px;
+        max-height: 220px;
     }
     
     .education-sub-illustration {
@@ -2275,8 +2200,8 @@ section {
     }
     
     .contact-main-illustration {
-        max-width: 180px;
-        max-height: 140px;
+        max-width: 250px;
+        max-height: 200px;
     }
     
     .contact-sub-illustration {

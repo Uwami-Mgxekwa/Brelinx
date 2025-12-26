@@ -2049,7 +2049,7 @@ section {
 }
 
 /* ========================================
-   Illustrations Styling
+   Illustrations Styling - Performance Optimized
    ======================================== */
 
 /* Hero Section Illustrations */
@@ -2076,15 +2076,19 @@ section {
 
 .hero-illustration {
     max-width: 100%;
+    width: 100%;
+    max-height: 400px;
     height: auto;
     border-radius: 20px;
     box-shadow: var(--shadow-lg);
-    transition: var(--transition);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: float 6s ease-in-out infinite;
+    will-change: transform;
+    object-fit: cover;
 }
 
 .hero-illustration:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: 0 20px 40px rgba(45, 138, 95, 0.2);
 }
 
@@ -2098,17 +2102,18 @@ section {
 }
 
 .services-illustration {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
     border-radius: 50%;
     box-shadow: var(--shadow-md);
-    transition: var(--transition);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 3px solid var(--primary-color);
+    will-change: transform;
 }
 
 .services-illustration:hover {
-    transform: translateY(-10px) rotate(5deg);
+    transform: translateY(-5px) rotate(3deg);
     box-shadow: var(--shadow-lg);
     border-color: var(--accent-color);
 }
@@ -2116,28 +2121,8 @@ section {
 /* About Section Illustrations */
 .about-image {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
     justify-content: center;
     align-items: center;
-}
-
-.about-illustration-container {
-    width: 100%;
-    max-width: 350px;
-}
-
-.about-illustration {
-    width: 100%;
-    height: auto;
-    border-radius: 20px;
-    box-shadow: var(--shadow-lg);
-    transition: var(--transition);
-}
-
-.about-illustration:hover {
-    transform: scale(1.02);
-    box-shadow: 0 15px 30px rgba(45, 138, 95, 0.2);
 }
 
 /* Education Section Illustrations */
@@ -2150,15 +2135,19 @@ section {
 }
 
 .education-main-illustration {
-    max-width: 300px;
+    max-width: 250px;
+    max-height: 200px;
+    width: 100%;
     height: auto;
     border-radius: 16px;
     box-shadow: var(--shadow-lg);
-    transition: var(--transition);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    object-fit: cover;
+    will-change: transform;
 }
 
 .education-main-illustration:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: 0 20px 40px rgba(45, 138, 95, 0.2);
 }
 
@@ -2170,17 +2159,18 @@ section {
 }
 
 .education-sub-illustration {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
     border-radius: 50%;
     box-shadow: var(--shadow-md);
-    transition: var(--transition);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 2px solid var(--primary-color);
+    will-change: transform;
 }
 
 .education-sub-illustration:hover {
-    transform: translateY(-8px) scale(1.1);
+    transform: translateY(-5px) scale(1.05);
     box-shadow: var(--shadow-lg);
     border-color: var(--accent-color);
 }
@@ -2195,15 +2185,19 @@ section {
 }
 
 .contact-main-illustration {
-    max-width: 250px;
+    max-width: 200px;
+    max-height: 160px;
+    width: 100%;
     height: auto;
     border-radius: 16px;
     box-shadow: var(--shadow-lg);
-    transition: var(--transition);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    object-fit: cover;
+    will-change: transform;
 }
 
 .contact-main-illustration:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: 0 20px 40px rgba(45, 138, 95, 0.2);
 }
 
@@ -2215,19 +2209,33 @@ section {
 }
 
 .contact-sub-illustration {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     object-fit: cover;
     border-radius: 50%;
     box-shadow: var(--shadow-md);
-    transition: var(--transition);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 2px solid var(--primary-color);
+    will-change: transform;
 }
 
 .contact-sub-illustration:hover {
-    transform: translateY(-5px) rotate(-5deg);
+    transform: translateY(-3px) rotate(-3deg);
     box-shadow: var(--shadow-lg);
     border-color: var(--accent-color);
+}
+
+/* Performance Optimizations */
+.hero-illustration,
+.services-illustration,
+.education-main-illustration,
+.education-sub-illustration,
+.contact-main-illustration,
+.contact-sub-illustration {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 /* Responsive Design for Illustrations */
@@ -2244,6 +2252,7 @@ section {
     
     .hero-illustration {
         max-width: 280px;
+        max-height: 220px;
     }
     
     .services-illustrations {
@@ -2251,26 +2260,28 @@ section {
     }
     
     .services-illustration {
-        width: 80px;
-        height: 80px;
-    }
-    
-    .about-image {
-        gap: 1.5rem;
-    }
-    
-    .education-main-illustration {
-        max-width: 250px;
-    }
-    
-    .education-sub-illustration,
-    .contact-sub-illustration {
         width: 70px;
         height: 70px;
     }
     
-    .contact-main-illustration {
+    .education-main-illustration {
         max-width: 200px;
+        max-height: 160px;
+    }
+    
+    .education-sub-illustration {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .contact-main-illustration {
+        max-width: 180px;
+        max-height: 140px;
+    }
+    
+    .contact-sub-illustration {
+        width: 50px;
+        height: 50px;
     }
 }
 
@@ -2280,9 +2291,13 @@ section {
         height: 60px;
     }
     
-    .education-sub-illustration,
+    .education-sub-illustration {
+        width: 50px;
+        height: 50px;
+    }
+    
     .contact-sub-illustration {
-        width: 60px;
-        height: 60px;
+        width: 45px;
+        height: 45px;
     }
 }

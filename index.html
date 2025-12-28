@@ -57,6 +57,13 @@
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Preload critical images for faster loading -->
+    <link rel="preload" as="image" href="./assets/new.png" type="image/png">
+    
+    <!-- Prefetch likely next images -->
+    <link rel="prefetch" as="image" href="./assets/education-removebg-preview.png" type="image/png">
+    <link rel="prefetch" as="image" href="./assets/contact-removebg-preview.png" type="image/png">
+    
     <!-- Schema.org structured data -->
     <script type="application/ld+json">
     {
@@ -176,7 +183,7 @@
                     </div>
                 </div>
                 <div class="hero-image">
-                    <img src="./assets/new.png" alt="IT Solutions Illustration" class="hero-illustration" loading="lazy" decoding="async">
+                    <img src="./assets/new.png" alt="IT Solutions Illustration" class="hero-illustration" width="500" height="400" loading="eager" decoding="async">
                 </div>
             </div>
         </div>
@@ -321,53 +328,53 @@
                 <div class="partners-track">
                     <div class="partner-item">
                         <div class="partner-logo">
-                            <img src="./assets/kds.png" alt="KDS Appliances" class="partner-logo-img">
+                            <img src="./assets/kds.png" alt="KDS Appliances" class="partner-logo-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="partner-item">
                         <div class="partner-logo">
-                            <img src="./assets/electrohome.png" alt="Electrohome International" class="partner-logo-img">
+                            <img src="./assets/electrohome.png" alt="Electrohome International" class="partner-logo-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="partner-item">
                         <div class="partner-logo">
-                            <img src="./assets/gradientfashion.png" alt="Gradient Fashion" class="partner-logo-img">
+                            <img src="./assets/gradientfashion.png" alt="Gradient Fashion" class="partner-logo-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="partner-item">
                         <div class="partner-logo">
-                            <img src="./assets/galactictech.png" alt="Galactic Tech" class="partner-logo-img">
+                            <img src="./assets/galactictech.png" alt="Galactic Tech" class="partner-logo-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="partner-item">
                         <div class="partner-logo">
-                            <img src="./assets/cosmossolution.png" alt="Cosmos Solutions" class="partner-logo-img">
+                            <img src="./assets/cosmossolution.png" alt="Cosmos Solutions" class="partner-logo-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <!-- Duplicate for seamless loop -->
                     <div class="partner-item">
                         <div class="partner-logo">
-                            <img src="./assets/kds.png" alt="KDS Appliances" class="partner-logo-img">
+                            <img src="./assets/kds.png" alt="KDS Appliances" class="partner-logo-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="partner-item">
                         <div class="partner-logo">
-                            <img src="./assets/electrohome.png" alt="Electrohome International" class="partner-logo-img">
+                            <img src="./assets/electrohome.png" alt="Electrohome International" class="partner-logo-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="partner-item">
                         <div class="partner-logo">
-                            <img src="./assets/gradientfashion.png" alt="Gradient Fashion" class="partner-logo-img">
+                            <img src="./assets/gradientfashion.png" alt="Gradient Fashion" class="partner-logo-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="partner-item">
                         <div class="partner-logo">
-                            <img src="./assets/galactictech.png" alt="Galactic Tech" class="partner-logo-img">
+                            <img src="./assets/galactictech.png" alt="Galactic Tech" class="partner-logo-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="partner-item">
                         <div class="partner-logo">
-                            <img src="./assets/cosmossolution.png" alt="Cosmos Solutions" class="partner-logo-img">
+                            <img src="./assets/cosmossolution.png" alt="Cosmos Solutions" class="partner-logo-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                 </div>
@@ -382,7 +389,7 @@
                 <h2 class="section-title">Education & Coaching</h2>
                 <p class="section-subtitle">Empowering students and aspiring developers with personalized learning</p>
                 <div class="education-illustrations">
-                    <img src="./assets/education-removebg-preview.png" alt="Education Main Illustration" class="education-main-illustration" loading="lazy" decoding="async">
+                    <img src="./assets/education-removebg-preview.png" alt="Education Main Illustration" class="education-main-illustration" width="320" height="260" loading="lazy" decoding="async">
                 </div>
             </div>
             <div class="education-content">
@@ -701,7 +708,7 @@
                 <h2 class="section-title">Get In Touch</h2>
                 <p class="section-subtitle">We'd love to hear from you. Reach out to us today!</p>
                 <div class="contact-illustrations">
-                    <img src="./assets/contact-removebg-preview.png" alt="Contact Us Main" class="contact-main-illustration" loading="lazy" decoding="async">
+                    <img src="./assets/contact-removebg-preview.png" alt="Contact Us Main" class="contact-main-illustration" width="300" height="240" loading="lazy" decoding="async">
                 </div>
             </div>
             <div class="contact-content">

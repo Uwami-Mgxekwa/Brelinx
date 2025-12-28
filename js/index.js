@@ -888,3 +888,161 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+// ========================================
+// Enhanced Image Loading & Protection
+// ========================================
+
+// Disable right-click context menu on images
+document.addEventListener('contextmenu', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// Disable drag and drop for images
+document.addEventListener('dragstart', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// Disable image selection
+document.addEventListener('selectstart', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// Disable keyboard shortcuts for saving images
+document.addEventListener('keydown', function(e) {
+    // Disable Ctrl+S, Ctrl+A, Ctrl+Shift+I, F12
+    if ((e.ctrlKey && (e.key === 's' || e.key === 'a')) || 
+        (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+        e.key === 'F12') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// Enhanced lazy loading with intersection observer
+const imageObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const img = entry.target;
+            
+            // Add loading class for smooth transition
+            img.classList.add('loading');
+            
+            // Handle image load success
+            img.addEventListener('load', () => {
+                img.classList.remove('loading');
+                img.classList.add('loaded');
+                
+                // Add protection after loading
+                img.style.pointerEvents = 'none';
+                img.draggable = false;
+            });
+            
+            // Handle image load error
+            img.addEventListener('error', () => {
+                img.classList.remove('loading');
+                img.classList.add('error');
+            });
+            
+            // Stop observing this image
+            observer.unobserve(img);
+        }
+    });
+}, {
+    // Start loading when image is 50px away from viewport
+    rootMargin: '50px 0px',
+    threshold: 0.01
+});
+
+// Observe all lazy-loaded images
+document.addEventListener('DOMContentLoaded', () => {
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    lazyImages.forEach(img => {
+        imageObserver.observe(img);
+        
+        // Add protection attributes
+        img.draggable = false;
+        img.style.pointerEvents = 'none';
+    });
+    
+    // Protect all images immediately
+    const allImages = document.querySelectorAll('img');
+    allImages.forEach(img => {
+        img.draggable = false;
+        img.addEventListener('contextmenu', e => e.preventDefault());
+        img.addEventListener('dragstart', e => e.preventDefault());
+        img.addEventListener('selectstart', e => e.preventDefault());
+    });
+});
+
+// Preload critical images on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Preload hero image if not already loaded
+    const heroImg = document.querySelector('.hero-illustration');
+    if (heroImg && !heroImg.complete) {
+        const preloadLink = document.createElement('link');
+        preloadLink.rel = 'preload';
+        preloadLink.as = 'image';
+        preloadLink.href = heroImg.src;
+        document.head.appendChild(preloadLink);
+    }
+});
+
+// Performance monitoring
+if ('performance' in window) {
+    window.addEventListener('load', () => {
+        // Log image loading performance
+        const images = document.querySelectorAll('img');
+        const imageLoadTimes = [];
+        
+        images.forEach(img => {
+            if (img.complete) {
+                const loadTime = performance.now();
+                imageLoadTimes.push({
+                    src: img.src,
+                    loadTime: loadTime
+                });
+            }
+        });
+        
+        // Optional: Send performance data to analytics
+        console.log('Image loading performance:', imageLoadTimes);
+    });
+}
+
+// Additional protection: Disable print screen (limited effectiveness)
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'PrintScreen') {
+        navigator.clipboard.writeText('');
+        alert('Screenshots are disabled for image protection.');
+    }
+});
+
+// Disable developer tools (basic protection)
+let devtools = {
+    open: false,
+    orientation: null
+};
+
+const threshold = 160;
+
+setInterval(() => {
+    if (window.outerHeight - window.innerHeight > threshold || 
+        window.outerWidth - window.innerWidth > threshold) {
+        if (!devtools.open) {
+            devtools.open = true;
+            console.clear();
+            console.log('%cImage protection active', 'color: red; font-size: 20px;');
+        }
+    } else {
+        devtools.open = false;
+    }
+}, 500);

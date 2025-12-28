@@ -2342,14 +2342,19 @@ img::-moz-selection {
     user-select: none;
 }
 
-/* Lazy loading fade-in effect */
+/* Lazy loading fade-in effect - Fixed */
 img[loading="lazy"] {
-    opacity: 0;
+    opacity: 1; /* Changed from 0 to 1 - show images by default */
     transition: opacity 0.3s ease;
 }
 
 img[loading="lazy"].loaded {
     opacity: 1;
+}
+
+/* Only hide images that are being lazy loaded and not yet in viewport */
+img[loading="lazy"]:not(.loaded):not(.loading) {
+    opacity: 0.7; /* Slightly visible while loading */
 }
 
 /* Prevent cumulative layout shift - preserve transparency */
@@ -2455,4 +2460,41 @@ img.loading {
 
 img.loaded {
     background: transparent !important;
+}
+/* ========================================
+   Emergency Image Visibility Fix
+   ======================================== */
+
+/* Force all images to be visible - emergency override */
+img {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* Specific fixes for problem areas */
+.partner-logo-img,
+.education-main-illustration,
+.contact-main-illustration {
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: transparent !important;
+}
+
+/* Partner logos specific fix */
+.partner-logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.partners-track {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Education and contact illustrations */
+.education-illustrations,
+.contact-illustrations {
+    opacity: 1 !important;
+    visibility: visible !important;
 }

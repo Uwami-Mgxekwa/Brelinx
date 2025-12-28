@@ -925,52 +925,54 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Enhanced lazy loading with intersection observer - simplified
+// Simplified lazy loading with intersection observer
 const imageObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const img = entry.target;
             
-            // Simple loading transition
-            img.classList.add('loading');
+            // Ensure image is visible
+            img.style.opacity = '1';
             img.style.background = 'transparent';
+            img.classList.add('loaded');
             
-            // Handle image load success
-            img.addEventListener('load', () => {
-                img.classList.remove('loading');
-                img.classList.add('loaded');
-                img.style.background = 'transparent';
-                
-                // Basic protection only
-                img.draggable = false;
-            });
-            
-            // Handle image load error
-            img.addEventListener('error', () => {
-                img.classList.remove('loading');
-                img.classList.add('error');
-                img.style.background = 'transparent';
-            });
+            // Basic protection
+            img.draggable = false;
             
             // Stop observing this image
             observer.unobserve(img);
         }
     });
 }, {
-    // Start loading when image is 50px away from viewport
-    rootMargin: '50px 0px',
-    threshold: 0.01
+    // More aggressive loading - start when image is 100px away
+    rootMargin: '100px 0px',
+    threshold: 0.1
 });
 
-// Observe all lazy-loaded images - simplified protection
+// Observe all lazy-loaded images - with fallback
 document.addEventListener('DOMContentLoaded', () => {
     const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    
+    // Fallback: Make all images visible immediately if intersection observer fails
+    setTimeout(() => {
+        lazyImages.forEach(img => {
+            if (!img.classList.contains('loaded')) {
+                img.style.opacity = '1';
+                img.style.background = 'transparent';
+                img.classList.add('loaded');
+                img.draggable = false;
+            }
+        });
+    }, 1000); // 1 second fallback
+    
     lazyImages.forEach(img => {
-        imageObserver.observe(img);
-        
-        // Basic protection only
-        img.draggable = false;
+        // Make sure images are visible by default
+        img.style.opacity = '1';
         img.style.background = 'transparent';
+        img.draggable = false;
+        
+        // Still use intersection observer for optimization
+        imageObserver.observe(img);
     });
     
     // Basic protection for all images
@@ -980,7 +982,6 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.background = 'transparent';
         img.addEventListener('contextmenu', e => e.preventDefault());
         img.addEventListener('dragstart', e => e.preventDefault());
-        // Removed selectstart that was interfering
     });
 });
 

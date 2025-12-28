@@ -927,19 +927,21 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Enhanced lazy loading with intersection observer
+// Enhanced lazy loading with intersection observer - preserve transparency
 const imageObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const img = entry.target;
             
-            // Add loading class for smooth transition
+            // Add loading class for smooth transition (no background)
             img.classList.add('loading');
+            img.style.background = 'transparent';
             
             // Handle image load success
             img.addEventListener('load', () => {
                 img.classList.remove('loading');
                 img.classList.add('loaded');
+                img.style.background = 'transparent';
                 
                 // Add protection after loading
                 img.style.pointerEvents = 'none';
@@ -950,6 +952,7 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
             img.addEventListener('error', () => {
                 img.classList.remove('loading');
                 img.classList.add('error');
+                img.style.background = 'transparent';
             });
             
             // Stop observing this image
@@ -962,21 +965,23 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
     threshold: 0.01
 });
 
-// Observe all lazy-loaded images
+// Observe all lazy-loaded images - preserve transparency
 document.addEventListener('DOMContentLoaded', () => {
     const lazyImages = document.querySelectorAll('img[loading="lazy"]');
     lazyImages.forEach(img => {
         imageObserver.observe(img);
         
-        // Add protection attributes
+        // Add protection attributes and preserve transparency
         img.draggable = false;
         img.style.pointerEvents = 'none';
+        img.style.background = 'transparent';
     });
     
-    // Protect all images immediately
+    // Protect all images immediately and preserve transparency
     const allImages = document.querySelectorAll('img');
     allImages.forEach(img => {
         img.draggable = false;
+        img.style.background = 'transparent';
         img.addEventListener('contextmenu', e => e.preventDefault());
         img.addEventListener('dragstart', e => e.preventDefault());
         img.addEventListener('selectstart', e => e.preventDefault());

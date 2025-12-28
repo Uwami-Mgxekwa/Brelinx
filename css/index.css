@@ -2308,11 +2308,12 @@ img::-moz-selection {
     background: transparent;
 }
 
-/* Smooth image loading transition */
+/* Smooth image loading transition - preserve transparency */
 .hero-illustration,
 .education-main-illustration,
 .contact-main-illustration {
     transition: opacity 0.3s ease;
+    background: transparent !important; /* Force transparent background */
     /* Additional protection */
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -2322,21 +2323,13 @@ img::-moz-selection {
     user-select: none;
 }
 
-/* Loading placeholder for images */
+/* Loading placeholder removed - preserve transparency */
 .hero-illustration[loading="eager"] {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: loading-shimmer 1.5s infinite;
+    /* No background animation for transparent images */
+    background: transparent;
 }
 
-@keyframes loading-shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
-    }
-}
+/* Shimmer animation removed to preserve transparency */
 
 /* Optimize partner logo loading */
 .partner-logo-img {
@@ -2359,34 +2352,43 @@ img[loading="lazy"].loaded {
     opacity: 1;
 }
 
-/* Prevent cumulative layout shift */
+/* Prevent cumulative layout shift - preserve transparency */
 .hero-image,
 .education-illustrations,
 .contact-illustrations {
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to preserve transparency */
 }
 
-/* Aspect ratio containers to prevent layout shift */
-.hero-image::before {
-    content: '';
-    display: block;
-    padding-top: 80%; /* 5:4 aspect ratio */
-}
-
+/* Remove aspect ratio container that was adding background */
 .hero-image img {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative; /* Changed from absolute */
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain; /* Changed from cover to preserve transparency */
+    background: transparent;
 }
 
-/* Mobile optimization */
+/* Mobile optimization - preserve transparency */
 @media (max-width: 768px) {
-    .hero-image::before {
-        padding-top: 75%; /* Adjust aspect ratio for mobile */
+    .hero-image img {
+        max-width: 280px;
+        max-height: 220px;
+        width: auto;
+        height: auto;
+        background: transparent;
+    }
+    
+    .education-main-illustration {
+        max-width: 280px;
+        max-height: 220px;
+        background: transparent;
+    }
+    
+    .contact-main-illustration {
+        max-width: 250px;
+        max-height: 200px;
+        background: transparent;
     }
 }
 
@@ -2411,4 +2413,46 @@ img[loading="lazy"].loaded {
     background: transparent;
     z-index: 10;
     pointer-events: none;
+}
+/* ========================================
+   Dark/Light Mode Image Compatibility
+   ======================================== */
+
+/* Ensure images work well in both themes */
+[data-theme="light"] .hero-illustration,
+[data-theme="light"] .education-main-illustration,
+[data-theme="light"] .contact-main-illustration {
+    background: transparent !important;
+    filter: none;
+}
+
+[data-theme="dark"] .hero-illustration,
+[data-theme="dark"] .education-main-illustration,
+[data-theme="dark"] .contact-main-illustration {
+    background: transparent !important;
+    filter: none;
+    /* Optional: Add subtle glow for dark mode */
+    /* filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1)); */
+}
+
+/* Partner logos transparency */
+.partner-logo-img {
+    background: transparent !important;
+}
+
+/* Ensure no background colors interfere with transparency */
+.hero-image,
+.education-illustrations,
+.contact-illustrations,
+.partner-logo {
+    background: transparent !important;
+}
+
+/* Remove any loading states that might add backgrounds */
+img.loading {
+    background: transparent !important;
+}
+
+img.loaded {
+    background: transparent !important;
 }

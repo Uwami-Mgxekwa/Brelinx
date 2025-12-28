@@ -916,24 +916,22 @@ document.addEventListener('selectstart', function(e) {
     }
 });
 
-// Disable keyboard shortcuts for saving images
+// Basic keyboard protection (simplified)
 document.addEventListener('keydown', function(e) {
-    // Disable Ctrl+S, Ctrl+A, Ctrl+Shift+I, F12
-    if ((e.ctrlKey && (e.key === 's' || e.key === 'a')) || 
-        (e.ctrlKey && e.shiftKey && e.key === 'I') || 
-        e.key === 'F12') {
+    // Only disable Ctrl+S (save)
+    if (e.ctrlKey && e.key === 's') {
         e.preventDefault();
         return false;
     }
 });
 
-// Enhanced lazy loading with intersection observer - preserve transparency
+// Enhanced lazy loading with intersection observer - simplified
 const imageObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const img = entry.target;
             
-            // Add loading class for smooth transition (no background)
+            // Simple loading transition
             img.classList.add('loading');
             img.style.background = 'transparent';
             
@@ -943,8 +941,7 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
                 img.classList.add('loaded');
                 img.style.background = 'transparent';
                 
-                // Add protection after loading
-                img.style.pointerEvents = 'none';
+                // Basic protection only
                 img.draggable = false;
             });
             
@@ -965,26 +962,25 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
     threshold: 0.01
 });
 
-// Observe all lazy-loaded images - preserve transparency
+// Observe all lazy-loaded images - simplified protection
 document.addEventListener('DOMContentLoaded', () => {
     const lazyImages = document.querySelectorAll('img[loading="lazy"]');
     lazyImages.forEach(img => {
         imageObserver.observe(img);
         
-        // Add protection attributes and preserve transparency
+        // Basic protection only
         img.draggable = false;
-        img.style.pointerEvents = 'none';
         img.style.background = 'transparent';
     });
     
-    // Protect all images immediately and preserve transparency
+    // Basic protection for all images
     const allImages = document.querySelectorAll('img');
     allImages.forEach(img => {
         img.draggable = false;
         img.style.background = 'transparent';
         img.addEventListener('contextmenu', e => e.preventDefault());
         img.addEventListener('dragstart', e => e.preventDefault());
-        img.addEventListener('selectstart', e => e.preventDefault());
+        // Removed selectstart that was interfering
     });
 });
 
@@ -1027,27 +1023,8 @@ if ('performance' in window) {
 document.addEventListener('keyup', function(e) {
     if (e.key === 'PrintScreen') {
         navigator.clipboard.writeText('');
-        alert('Screenshots are disabled for image protection.');
+        // Removed alert to prevent interruption
     }
 });
 
-// Disable developer tools (basic protection)
-let devtools = {
-    open: false,
-    orientation: null
-};
-
-const threshold = 160;
-
-setInterval(() => {
-    if (window.outerHeight - window.innerHeight > threshold || 
-        window.outerWidth - window.innerWidth > threshold) {
-        if (!devtools.open) {
-            devtools.open = true;
-            console.clear();
-            console.log('%cImage protection active', 'color: red; font-size: 20px;');
-        }
-    } else {
-        devtools.open = false;
-    }
-}, 500);
+// Removed aggressive developer tools detection that was breaking images

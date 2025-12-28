@@ -2280,7 +2280,7 @@ section {
 img {
     height: auto;
     max-width: 100%;
-    /* Image protection */
+    /* Image protection - but allow loading */
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -2290,7 +2290,7 @@ img {
     -moz-user-drag: none;
     -o-user-drag: none;
     user-drag: none;
-    pointer-events: none;
+    /* Removed pointer-events: none that was blocking images */
 }
 
 /* Re-enable pointer events for interactive elements */

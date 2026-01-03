@@ -2289,8 +2289,7 @@ img {
     -khtml-user-drag: none;
     -moz-user-drag: none;
     -o-user-drag: none;
-    user-drag: none;
-    /* Removed pointer-events: none that was blocking images */
+    /* Removed non-standard user-drag property */
 }
 
 /* Re-enable pointer events for interactive elements */

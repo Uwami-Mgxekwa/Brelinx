@@ -1029,3 +1029,141 @@ document.addEventListener('keyup', function(e) {
 });
 
 // Removed aggressive developer tools detection that was breaking images
+// ========================================
+// Advanced Source Code Protection
+// ========================================
+
+// Disable right-click completely
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+});
+
+// Disable key combinations for viewing source
+document.addEventListener('keydown', function(e) {
+    // Disable Ctrl+U (View Source)
+    if (e.ctrlKey && e.key === 'u') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Disable Ctrl+Shift+I (Developer Tools)
+    if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Disable Ctrl+Shift+J (Console)
+    if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Disable Ctrl+Shift+C (Element Inspector)
+    if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Disable F12 (Developer Tools)
+    if (e.key === 'F12') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Disable Ctrl+S (Save Page)
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Disable Ctrl+A (Select All)
+    if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Disable Ctrl+P (Print)
+    if (e.ctrlKey && e.key === 'p') {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// Disable text selection
+document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+    return false;
+});
+
+// Disable drag and drop
+document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+    return false;
+});
+
+// Clear console periodically
+setInterval(() => {
+    console.clear();
+    console.log('%c🔒 Source code is protected', 'color: red; font-size: 20px; font-weight: bold;');
+    console.log('%c⚠️ Unauthorized access is prohibited', 'color: orange; font-size: 14px;');
+}, 1000);
+
+// Detect developer tools (basic detection)
+let devtools = {
+    open: false,
+    orientation: null
+};
+
+const threshold = 160;
+
+setInterval(() => {
+    if (window.outerHeight - window.innerHeight > threshold || 
+        window.outerWidth - window.innerWidth > threshold) {
+        if (!devtools.open) {
+            devtools.open = true;
+            // Redirect or show warning
+            document.body.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial; font-size: 24px; color: red; text-align: center;"><div><h1>🔒 Access Denied</h1><p>Developer tools are not allowed on this website.</p><p><a href="javascript:location.reload()">Reload Page</a></p></div></div>';
+        }
+    } else {
+        devtools.open = false;
+    }
+}, 1000);
+
+// Disable print screen
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'PrintScreen') {
+        navigator.clipboard.writeText('');
+        alert('Screenshots are disabled for security reasons.');
+    }
+});
+
+// Obfuscate source code in memory (basic)
+setTimeout(() => {
+    // Remove comments and compress HTML
+    const htmlContent = document.documentElement.outerHTML;
+    const minified = htmlContent
+        .replace(/<!--[\s\S]*?-->/g, '') // Remove comments
+        .replace(/\s+/g, ' ') // Compress whitespace
+        .replace(/>\s+</g, '><'); // Remove spaces between tags
+    
+    // This doesn't actually prevent viewing source, but makes it harder to read
+}, 2000);
+
+// Disable common inspection methods
+Object.defineProperty(console, '_commandLineAPI', {
+    get: function() {
+        throw new Error('Console access denied');
+    }
+});
+
+// Override console methods
+const originalLog = console.log;
+console.log = function() {
+    originalLog.apply(console, ['🔒 Console access restricted']);
+};
+
+// Prevent iframe embedding (clickjacking protection)
+if (window.top !== window.self) {
+    window.top.location = window.self.location;
+}

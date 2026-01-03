@@ -2498,3 +2498,58 @@ img {
     opacity: 1 !important;
     visibility: visible !important;
 }
+/* ========================================
+   Source Code Protection Styles
+   ======================================== */
+
+/* Disable text selection globally */
+* {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Re-enable selection for input fields */
+input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Hide scrollbars to prevent right-click on them */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+/* Prevent highlighting */
+::selection {
+    background: transparent;
+}
+
+::-moz-selection {
+    background: transparent;
+}
+
+/* Disable outline on focus */
+*:focus {
+    outline: none !important;
+}
+
+/* Hide any potential debug elements */
+.debug, .dev-tools, .inspector {
+    display: none !important;
+    visibility: hidden !important;
+}

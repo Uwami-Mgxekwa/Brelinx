@@ -231,10 +231,56 @@ body {
     overflow: hidden;
 }
 
+/* Background Video Styles */
+.hero-video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.hero-bg-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    /* iOS-specific optimizations */
+    -webkit-playsinline: true;
+    -webkit-transform: translate(-50%, -50%) translateZ(0);
+    /* Ensure video is always visible */
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.hero-video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    /* Gradient overlay for better text readability */
+    background: linear-gradient(
+        135deg,
+        rgba(45, 138, 95, 0.3) 0%,
+        rgba(0, 0, 0, 0.5) 50%,
+        rgba(45, 138, 95, 0.2) 100%
+    );
+    z-index: 1;
+}
+
 .hero-content {
     position: relative;
-    z-index: 2;
-    max-width: 700px;
+    z-index: 3;
+    max-width: 800px;
     animation: fadeInUp 1s ease-out;
 }
 
@@ -243,17 +289,18 @@ body {
     font-weight: 800;
     margin-bottom: 1rem;
     line-height: 1.2;
-    background: linear-gradient(135deg, var(--text-primary), var(--primary-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    /* Force white text for video background visibility */
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     animation: fadeInUp 1s ease-out 0.2s both;
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: var(--text-secondary);
+    /* Force light text for video background visibility */
+    color: #f8f9fa !important;
     margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     animation: fadeInUp 1s ease-out 0.4s both;
 }
 
@@ -262,6 +309,26 @@ body {
     gap: 1rem;
     flex-wrap: wrap;
     animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+/* Hero-specific button styles for video background */
+.hero .btn-secondary {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff !important;
+    border-color: #ffffff;
+    backdrop-filter: blur(10px);
+    text-shadow: none;
+}
+
+.hero .btn-secondary:hover {
+    background-color: #ffffff;
+    color: var(--primary-color) !important;
+    border-color: #ffffff;
+}
+
+.hero .btn-primary {
+    /* Ensure primary button remains visible */
+    box-shadow: 0 4px 15px rgba(45, 138, 95, 0.4);
 }
 
 .btn {
@@ -645,6 +712,59 @@ section {
     background: linear-gradient(135deg, rgba(45, 138, 95, 0.05), rgba(31, 181, 116, 0.05));
 }
 
+/* Coaching Hero with Background Video */
+.coaching-hero .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 800px;
+    position: relative;
+    z-index: 3;
+    text-align: left;
+}
+
+/* Coaching Hero Text Styles for Video Background */
+.coaching-hero .hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    /* Force white text for video background visibility */
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+.coaching-hero .hero-subtitle {
+    font-size: 1.25rem;
+    /* Force light text for video background visibility */
+    color: #f8f9fa !important;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+/* Coaching Hero Button Styles for Video Background */
+.coaching-hero .btn-secondary {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff !important;
+    border-color: #ffffff;
+    backdrop-filter: blur(10px);
+    text-shadow: none;
+}
+
+.coaching-hero .btn-secondary:hover {
+    background-color: #ffffff;
+    color: var(--primary-color) !important;
+    border-color: #ffffff;
+}
+
+.coaching-hero .btn-primary {
+    /* Ensure primary button remains visible */
+    box-shadow: 0 4px 15px rgba(45, 138, 95, 0.4);
+}
+
 .hero-stats {
     display: flex;
     gap: 2rem;
@@ -677,7 +797,22 @@ section {
     margin-top: 0.25rem;
 }
 
-/* Business Link in Navigation */
+/* Coaching Hero Stats for Video Background */
+.coaching-hero .stat-badge {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.coaching-hero .stat-number {
+    color: #ffffff !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.coaching-hero .stat-label {
+    color: #f8f9fa !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
 .business-link {
     background: linear-gradient(135deg, #007acc, #0056b3);
     color: white !important;
@@ -2638,16 +2773,19 @@ section {
 
 /* Hero Section Illustrations */
 .hero-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: center;
-    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 800px;
+    position: relative;
+    z-index: 3;
+    text-align: left;
 }
 
 .hero-text {
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .hero-image {
@@ -2656,6 +2794,51 @@ section {
     align-items: center;
     position: relative;
     z-index: 2;
+}
+
+.hero-video-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.hero-video {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 20px;
+    display: block;
+    /* iOS-specific optimizations */
+    -webkit-playsinline: true;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Ensure video is always visible */
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: transparent !important;
+}
+
+.hero-video-fallback {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border-radius: 20px;
+}
+
+.hero-video-fallback img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
 }
 
 .hero-illustration {
@@ -2728,13 +2911,32 @@ section {
 /* Responsive Design for Illustrations */
 @media (max-width: 768px) {
     .hero-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
         text-align: center;
+        align-items: center;
+        max-width: 90%;
     }
     
-    .hero-image {
-        order: -1;
+    /* Coaching Hero Mobile Styles */
+    .coaching-hero .hero-content {
+        text-align: center;
+        align-items: center;
+        max-width: 90%;
+    }
+    
+    /* Background video adjustments for mobile */
+    .hero-video-overlay {
+        background: linear-gradient(
+            135deg,
+            rgba(45, 138, 95, 0.4) 0%,
+            rgba(0, 0, 0, 0.6) 50%,
+            rgba(45, 138, 95, 0.3) 100%
+        );
+    }
+    
+    .hero-bg-video {
+        /* Ensure video covers properly on mobile */
+        min-width: 120%;
+        min-height: 120%;
     }
     
     .hero-illustration {
@@ -2754,6 +2956,17 @@ section {
 }
 
 @media (max-width: 480px) {
+    .hero-video-container {
+        max-width: 250px;
+        max-height: 200px;
+    }
+    
+    .hero-video {
+        max-width: 250px;
+        max-height: 200px;
+        border-radius: 12px;
+    }
+    
     .hero-illustration {
         max-width: 250px;
         max-height: 200px;

@@ -183,6 +183,25 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <!-- Background Video -->
+        <div class="hero-video-background">
+            <video 
+                class="hero-bg-video"
+                autoplay 
+                muted 
+                loop 
+                playsinline
+                disablepictureinpicture
+                preload="auto"
+                webkit-playsinline="true"
+                x-webkit-airplay="deny"
+                aria-label="Brelinx team working together background video">
+                <source src="./assets/videos/team.mp4" type="video/mp4">
+            </video>
+            <!-- Video overlay for better text readability -->
+            <div class="hero-video-overlay"></div>
+        </div>
+        
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
@@ -192,9 +211,6 @@
                         <a href="#contact" class="btn btn-primary">Get Free Consultation</a>
                         <a href="#services" class="btn btn-secondary">View Our Services</a>
                     </div>
-                </div>
-                <div class="hero-image">
-                    <img src="./assets/new.png" alt="IT Solutions Illustration" class="hero-illustration" width="500" height="400" loading="eager" decoding="async">
                 </div>
             </div>
         </div>

@@ -605,7 +605,7 @@ const knowledgeBase = {
 const responses = {
     greetings: "Hello! 👋 Welcome to Brelinx. I'm here to help you with any questions about our IT services across South Africa. What would you like to know?",
     
-    services: "We offer a comprehensive range of IT services nationwide:\n\n🌐 Website Development (NEW!)\n🖥️ Software Development\n📱 Mobile Applications\n👨‍🏫 Programming Coaching\n📚 Assignment Help\n☁️ Cloud Solutions\n� 🔒 Cybersecurity\n💾 Data Management\n🛠️ IT Support 24/7\n\nWhich service interests you?",
+    services: "We offer comprehensive business IT services nationwide:\n\n🌐 Website Development\n🖥️ Custom Software Development\n📱 Mobile Applications\n☁️ Cloud Solutions\n🔒 Cybersecurity\n💾 Data Management & Analytics\n🛠️ IT Support 24/7\n🔧 System Integration\n📈 Digital Transformation\n\n🎓 Looking for programming coaching? Visit our Student Portal: brelinx.com/coaching.html\n\nWhich business service interests you?",
     
     website: "Our Website Development services include:\n\n🌐 Professional, responsive websites\n🌐 Brand showcase design\n🌐 Business growth focused\n🌐 Mobile-optimized\n🌐 SEO-friendly\n\nWe create websites that drive business growth online. Ready to build your online presence?",
     
@@ -613,9 +613,9 @@ const responses = {
     
     mobile: "We build exceptional Mobile Applications:\n\n� Natnive iOS & Android apps\n�  Cross-platform solutions\n� U‍ser-friendly interfaces\n📱 Performance optimized\n\nWe create apps that deliver outstanding user experiences. Interested in building an app?",
     
-    coaching: "Our Programming Coaching services:\n\n👨‍💻 One-on-one online sessions\n👨‍� Pdersonalized learning pace\n👨‍💻 Languages: Python, JavaScript, Java, React, SQL, HTML/CSS\n👨‍💻 Beginner to advanced levels\n👨‍💻 Real-world projects\n👨‍💻 Flexible scheduling\n\nReady to start your coding journey?",
+    coaching: "🎓 Programming Coaching is now on our dedicated Student Portal!\n\nVisit: brelinx.com/coaching.html for:\n\n👨‍💻 One-on-one online sessions\n👨‍💻 Personalized learning pace\n👨‍💻 Languages: Python, JavaScript, Java, React, SQL, HTML/CSS\n👨‍💻 Beginner to advanced levels\n👨‍💻 Real-world projects\n👨‍💻 Flexible scheduling\n👨‍💻 Student-friendly pricing\n\nReady to start your coding journey?",
     
-    assignment: "We provide Assignment Help for:\n\n📚 Understanding complex concepts\n📚 Code debugging & optimization\n📚 Project completion support\n📚 Exam preparation\n📚 Portfolio projects\n\nWe help you learn and complete your work with confidence. Need help with an assignment?",
+    assignment: "📚 Assignment Help is available on our Student Portal!\n\nVisit: brelinx.com/coaching.html for:\n\n📚 Understanding complex concepts\n📚 Code debugging & optimization\n📚 Project completion support\n📚 Exam preparation\n📚 Portfolio projects\n📚 Student-friendly rates\n\nWe help you learn and complete your work with confidence. Need help with an assignment?",
     
     cloud: "Our Cloud Solutions include:\n\n☁️ Cloud infrastructure setup\n☁️ Migration services\n☁️ AWS, Azure, Google Cloud\n☁️ Scalable architecture\n☁️ Cost optimization\n\nTransform your business with modern cloud technology!",
     
@@ -627,13 +627,13 @@ const responses = {
     
     location: "We're located at:\n\n📍 The Glen Road\nJohannesburg, GP 2090\nSouth Africa 🇿🇦\n\nWe serve clients nationwide across South Africa with online services. Visit our Contact section for the map!",
     
-    about: "Brelinx is your trusted IT partner across South Africa! 🚀\n\nWe're passionate about delivering innovative IT services and software solutions that transform businesses nationwide.\n\n✅ 100+ Projects Completed\n✅ 200+ Students Helped\n✅ 50+ Happy Clients\n✅ 24/7 Support Available\n✅ 6+ Years Experience\n\nOur commitment to excellence and customer satisfaction sets us apart. What would you like to know more about?",
+    about: "Brelinx is your trusted business IT partner across South Africa! 🚀\n\nWe're passionate about delivering innovative IT services and software solutions that transform businesses nationwide.\n\n✅ 100+ Business Projects Completed\n✅ 50+ Enterprise Clients\n✅ 24/7 Business Support Available\n✅ 6+ Years Industry Experience\n\n🎓 Students: Visit brelinx.com/coaching.html for programming coaching!\n\nOur commitment to excellence and customer satisfaction sets us apart. What would you like to know more about?",
     
     faq: "Check out our FAQ section for common questions about:\n\n❓ IT services across South Africa\n❓ Programming coaching for students\n❓ Software development pricing\n❓ Working with small businesses\n❓ University assignment help\n❓ What makes us different\n\nYou can find detailed answers in the FAQ section on our website!",
     
     nationwide: "Yes! We provide services nationwide across South Africa:\n\n🇿🇦 All provinces covered\n🇿🇦 Remote online services\n🇿🇦 Local support from Johannesburg\n🇿🇦 Flexible scheduling for all time zones\n\nWhether you're in Cape Town, Durban, Pretoria, or anywhere in SA - we're here to help!",
     
-    default: "I'm here to help! I can answer questions about:\n\n• Our services (including NEW Website Development!)\n• Programming coaching\n• Assignment help\n• Pricing\n• Contact information\n• Nationwide service coverage\n• FAQ section\n• And more!\n\nWhat would you like to know? Or chat with us directly on WhatsApp!"
+    default: "I'm here to help with business IT services! I can answer questions about:\n\n• Professional IT services\n• Website & software development\n• Mobile applications\n• Cloud solutions & cybersecurity\n• Business pricing & consultations\n• Nationwide service coverage\n\n🎓 Students: Visit brelinx.com/coaching.html for programming coaching!\n\nWhat would you like to know? Or chat with us directly on WhatsApp!"
 };
 
 // Find best match
@@ -980,13 +980,40 @@ document.addEventListener('DOMContentLoaded', () => {
         imageObserver.observe(img);
     });
     
-    // Basic protection for all images
+    // Basic protection for all images (including hero images)
     const allImages = document.querySelectorAll('img');
     allImages.forEach(img => {
         img.draggable = false;
         img.style.background = 'transparent';
         img.addEventListener('contextmenu', e => e.preventDefault());
         img.addEventListener('dragstart', e => e.preventDefault());
+    });
+    
+    // Ensure hero images are always visible (they have loading="eager")
+    const heroImages = document.querySelectorAll('.hero-illustration');
+    heroImages.forEach(img => {
+        img.style.opacity = '1';
+        img.style.background = 'transparent';
+        img.style.display = 'block';
+        img.draggable = false;
+        
+        // Debug hero image loading
+        console.log('Hero image found:', img.src);
+        
+        // Force load if not loaded
+        if (!img.complete) {
+            console.log('Hero image not complete, forcing load...');
+            img.onload = () => {
+                console.log('Hero image loaded successfully');
+                img.style.opacity = '1';
+                img.style.display = 'block';
+            };
+            img.onerror = () => {
+                console.error('Hero image failed to load:', img.src);
+            };
+        } else {
+            console.log('Hero image already loaded');
+        }
     });
 });
 

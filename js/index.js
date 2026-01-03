@@ -757,12 +757,17 @@ chatbotInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Quick reply buttons
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('quick-reply-btn')) {
-        handleUserMessage(e.target.dataset.message);
-    }
+// Initialize event listeners for initial quick reply buttons
+document.addEventListener('DOMContentLoaded', () => {
+    const initialQuickReplies = document.querySelectorAll('.quick-reply-btn');
+    initialQuickReplies.forEach(btn => {
+        btn.addEventListener('click', () => {
+            handleUserMessage(btn.dataset.message);
+        });
+    });
 });
+
+// Quick reply buttons - handled by individual event listeners in addQuickReplies function
 
 // ========================================
 // Brand Video Controls & iPhone Optimization

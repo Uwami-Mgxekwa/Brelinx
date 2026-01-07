@@ -314,7 +314,17 @@ body {
     
     .mobile-video {
         display: block;
+    }
+    
+    /* Business site mobile video (smaller) */
+    .hero:not(.coaching-hero) .mobile-video {
         transform: translate(-50%, -50%) scale(0.4);
+    }
+    
+    /* Coaching site mobile video (larger to fill) */
+    .coaching-hero .mobile-video {
+        transform: translate(-50%, -50%) scale(0.8);
+        min-height: 120%;
     }
 }
 

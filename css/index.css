@@ -340,16 +340,24 @@ body {
         transform: scale(1.2);
     }
     
-    /* Coaching site mobile video - same approach as business site */
+    /* Coaching site mobile video - custom fit for mobile1.mp4 */
     .coaching-hero .mobile-video {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
         object-position: center center;
-        transform: scale(1.2);
+        transform: scale(1.0);
+    }
+    
+    /* Adjust hero container height for coaching page to fit mobile1.mp4 while keeping content visible */
+    .coaching-hero {
+        min-height: 110vh;
+        height: 110vh;
     }
     
     /* Ensure video container covers full hero */
     .hero-video-background {
-        height: 100vh;
+        height: 110vh;
         min-height: 600px;
     }
     

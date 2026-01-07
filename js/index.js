@@ -776,9 +776,21 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const heroVideos = document.querySelectorAll('.hero-bg-video');
     
+    // Detect if user is on mobile
+    const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
     heroVideos.forEach((heroVideo, index) => {
         if (heroVideo) {
-            console.log(`Hero video ${index + 1} found`);
+            // Check if this video should be shown on current device
+            const isDesktopVideo = heroVideo.classList.contains('desktop-video');
+            const isMobileVideo = heroVideo.classList.contains('mobile-video');
+            
+            // Skip processing if video shouldn't be shown on current device
+            if ((isMobile && isDesktopVideo) || (!isMobile && isMobileVideo)) {
+                return;
+            }
+            
+            console.log(`Hero video ${index + 1} found (${isMobile ? 'mobile' : 'desktop'} version)`);
             
             // Disable picture-in-picture
             heroVideo.disablePictureInPicture = true;

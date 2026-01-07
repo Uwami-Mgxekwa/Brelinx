@@ -157,8 +157,9 @@
     <section id="home" class="hero coaching-hero">
         <!-- Background Video -->
         <div class="hero-video-background">
+            <!-- Desktop Video -->
             <video 
-                class="hero-bg-video"
+                class="hero-bg-video desktop-video"
                 autoplay 
                 muted 
                 loop 
@@ -174,6 +175,26 @@
                     <div class="hero-fallback-bg"></div>
                 </div>
             </video>
+            
+            <!-- Mobile Video -->
+            <video 
+                class="hero-bg-video mobile-video"
+                autoplay 
+                muted 
+                loop 
+                playsinline
+                disablepictureinpicture
+                preload="auto"
+                webkit-playsinline="true"
+                x-webkit-airplay="deny"
+                aria-label="Student learning programming background video - mobile optimized">
+                <source src="./assets/videos/mobile.mp4" type="video/mp4">
+                <!-- Fallback for browsers that don't support video -->
+                <div class="video-fallback">
+                    <div class="hero-fallback-bg"></div>
+                </div>
+            </video>
+            
             <!-- Video overlay for better text readability -->
             <div class="hero-video-overlay"></div>
         </div>

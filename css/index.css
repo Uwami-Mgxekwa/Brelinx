@@ -297,6 +297,26 @@ body {
     z-index: 0;
 }
 
+/* Mobile/Desktop Video Switching */
+.desktop-video {
+    display: block;
+}
+
+.mobile-video {
+    display: none;
+}
+
+/* Show mobile video on mobile devices */
+@media (max-width: 768px) {
+    .desktop-video {
+        display: none;
+    }
+    
+    .mobile-video {
+        display: block;
+    }
+}
+
 .hero-content {
     position: relative;
     z-index: 3;

@@ -550,6 +550,19 @@ document.addEventListener('DOMContentLoaded', () => {
 setInterval(fetchTechNews, 24 * 60 * 60 * 1000);
 
 // ========================================
+// Automatic Copyright Year Update
+// ========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const currentYearElement = document.getElementById('currentYear');
+    if (currentYearElement) {
+        const currentYear = new Date().getFullYear();
+        currentYearElement.textContent = currentYear;
+        console.log(`Copyright year automatically updated to ${currentYear}`);
+    }
+});
+
+// ========================================
 // Console Message
 // ========================================
 

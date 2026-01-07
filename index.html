@@ -185,8 +185,9 @@
     <section id="home" class="hero">
         <!-- Background Video -->
         <div class="hero-video-background">
+            <!-- Desktop Video -->
             <video 
-                class="hero-bg-video"
+                class="hero-bg-video desktop-video"
                 autoplay 
                 muted 
                 loop 
@@ -202,6 +203,26 @@
                     <div class="hero-fallback-bg"></div>
                 </div>
             </video>
+            
+            <!-- Mobile Video -->
+            <video 
+                class="hero-bg-video mobile-video"
+                autoplay 
+                muted 
+                loop 
+                playsinline
+                disablepictureinpicture
+                preload="auto"
+                webkit-playsinline="true"
+                x-webkit-airplay="deny"
+                aria-label="Brelinx business solutions background video - mobile optimized">
+                <source src="./assets/videos/index-mobile.mp4" type="video/mp4">
+                <!-- Fallback for browsers that don't support video -->
+                <div class="video-fallback">
+                    <div class="hero-fallback-bg"></div>
+                </div>
+            </video>
+            
             <!-- Video overlay for better text readability -->
             <div class="hero-video-overlay"></div>
         </div>
@@ -808,11 +829,9 @@
                     </ul>
                 </div>
             </div>
-			<!--
-            <div class="footer-bottom">
-                <p>&copy; 2025 Brelinx. All rights reserved.</p>
-                <p><a href="https://uwami-mgxekwa.github.io/uwami/">Uwami Mgxekwa</a></p>
-            </div>-->
+			<div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2026</span> Brelinx. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 

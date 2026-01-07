@@ -398,6 +398,12 @@ async function fetchTechNews() {
     const blogError = document.getElementById('blogError');
     const blogGrid = document.getElementById('blogGrid');
     
+    // Check if blog elements exist (only on index.html)
+    if (!blogLoading || !blogError || !blogGrid) {
+        console.log('Blog elements not found - skipping tech news loading');
+        return;
+    }
+    
     try {
         // Show loading state
         blogLoading.style.display = 'block';
@@ -430,6 +436,12 @@ async function fetchTechNews() {
 
 function displayTechNews(articles) {
     const blogGrid = document.getElementById('blogGrid');
+    
+    // Check if blogGrid exists
+    if (!blogGrid) {
+        console.log('Blog grid not found - skipping news display');
+        return;
+    }
     
     articles.forEach((article, index) => {
         // Skip articles without title or description
@@ -805,6 +817,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             console.log(`Hero video ${index + 1} found (${isMobile ? 'mobile' : 'desktop'} version)`);
             
+            // Optimize video loading
+            heroVideo.preload = 'metadata'; // Changed from 'auto' for better performance
+            
             // Disable picture-in-picture
             heroVideo.disablePictureInPicture = true;
             
@@ -822,20 +837,28 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Set volume to 0 as additional safety
             heroVideo.volume = 0;
+            
+            // Optimized loading events
             heroVideo.addEventListener('loadstart', () => {
                 console.log(`Hero video ${index + 1} loading started`);
             });
             
             heroVideo.addEventListener('canplay', () => {
                 console.log(`Hero video ${index + 1} can play`);
+                // Start playing as soon as possible
+                heroVideo.play().catch(e => {
+                    console.log(`Hero video ${index + 1} autoplay failed:`, e);
+                });
             });
             
             heroVideo.addEventListener('loadeddata', () => {
                 console.log(`Hero video ${index + 1} data loaded`);
                 heroVideo.style.opacity = '1';
+                heroVideo.style.transition = 'opacity 0.5s ease';
+                heroVideo.setAttribute('data-loaded', 'true');
             });
             
-            // Handle video loading errors
+            // Handle video loading errors gracefully
             heroVideo.addEventListener('error', (e) => {
                 console.log(`Hero video ${index + 1} loading error:`, e);
                 console.log(`Hero video ${index + 1} error details:`, heroVideo.error);
@@ -866,25 +889,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.addEventListener('click', playVideo, { once: true });
             }
             
-            // Optimize video performance
-            heroVideo.addEventListener('loadeddata', () => {
-                // Video is ready to play
-                heroVideo.style.opacity = '1';
-            });
-            
             // Ensure video plays when in viewport (for performance)
             const heroVideoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         heroVideo.play().catch(e => console.log(`Hero video ${index + 1} play failed:`, e));
-                    } else {
-                        // Don't pause hero videos as they should always play
-                        // heroVideo.pause();
                     }
+                    // Don't pause hero videos as they should always play when visible
                 });
             }, { threshold: 0.1 });
             
             heroVideoObserver.observe(heroVideo);
+            
+            // Preload video metadata for faster startup
+            setTimeout(() => {
+                if (heroVideo.readyState < 1) {
+                    heroVideo.load();
+                }
+            }, 100);
         }
     });
 });
@@ -1013,8 +1035,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-// ========================================
-// Enhanced Image Loading & Protection
+// Enhanced Image Loading & Protection with Performance Optimization
 // ========================================
 
 // Basic keyboard protection (only Ctrl+S save)
@@ -1026,16 +1047,33 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Simplified lazy loading with intersection observer
+// Optimized lazy loading with intersection observer
 const imageObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const img = entry.target;
             
-            // Ensure image is visible
-            img.style.opacity = '1';
-            img.style.background = 'transparent';
-            img.classList.add('loaded');
+            // Preload the image for smoother loading
+            const imageLoader = new Image();
+            imageLoader.onload = () => {
+                // Image loaded successfully, show it
+                img.style.opacity = '1';
+                img.style.background = 'transparent';
+                img.classList.add('loaded');
+                
+                // Add smooth transition
+                img.style.transition = 'opacity 0.3s ease';
+            };
+            
+            imageLoader.onerror = () => {
+                // Handle image loading error
+                console.warn('Image failed to load:', img.src);
+                img.style.opacity = '0.5';
+                img.alt = 'Image unavailable';
+            };
+            
+            // Start loading the image
+            imageLoader.src = img.src;
             
             // Basic protection
             img.draggable = false;
@@ -1045,16 +1083,16 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
         }
     });
 }, {
-    // More aggressive loading - start when image is 100px away
-    rootMargin: '100px 0px',
+    // Start loading when image is 50px away from viewport
+    rootMargin: '50px 0px',
     threshold: 0.1
 });
 
-// Observe all lazy-loaded images - with fallback
+// Enhanced image loading with immediate fallback
 document.addEventListener('DOMContentLoaded', () => {
     const lazyImages = document.querySelectorAll('img[loading="lazy"]');
     
-    // Fallback: Make all images visible immediately if intersection observer fails
+    // Immediate fallback for critical images
     setTimeout(() => {
         lazyImages.forEach(img => {
             if (!img.classList.contains('loaded')) {
@@ -1062,9 +1100,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.style.background = 'transparent';
                 img.classList.add('loaded');
                 img.draggable = false;
+                img.style.transition = 'opacity 0.3s ease';
             }
         });
-    }, 1000); // 1 second fallback
+    }, 500); // Reduced fallback time for better performance
     
     lazyImages.forEach(img => {
         // Make sure images are visible by default
@@ -1072,7 +1111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.background = 'transparent';
         img.draggable = false;
         
-        // Still use intersection observer for optimization
+        // Use intersection observer for optimization
         imageObserver.observe(img);
     });
     
@@ -1081,6 +1120,19 @@ document.addEventListener('DOMContentLoaded', () => {
     allImages.forEach(img => {
         img.draggable = false;
         img.style.background = 'transparent';
+        
+        // Add error handling for all images
+        img.addEventListener('error', function() {
+            console.warn('Image failed to load:', this.src);
+            this.style.opacity = '0.5';
+            this.alt = 'Image unavailable';
+        });
+        
+        // Add load event for smooth appearance
+        img.addEventListener('load', function() {
+            this.style.opacity = '1';
+            this.style.transition = 'opacity 0.3s ease';
+        });
     });
     
     // Ensure hero images are always visible (they have loading="eager")
@@ -1101,6 +1153,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Hero image loaded successfully');
                 img.style.opacity = '1';
                 img.style.display = 'block';
+                img.style.transition = 'opacity 0.3s ease';
             };
             img.onerror = () => {
                 console.error('Hero image failed to load:', img.src);
@@ -1111,7 +1164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Preload critical images on page load
+// Optimized preloading for critical images
 document.addEventListener('DOMContentLoaded', () => {
     // Preload hero image if not already loaded
     const heroImg = document.querySelector('.hero-illustration');
@@ -1122,27 +1175,29 @@ document.addEventListener('DOMContentLoaded', () => {
         preloadLink.href = heroImg.src;
         document.head.appendChild(preloadLink);
     }
+    
+    // Preload portfolio images for better performance
+    const portfolioImages = document.querySelectorAll('.portfolio-image img');
+    portfolioImages.forEach((img, index) => {
+        // Preload first 3 portfolio images
+        if (index < 3 && !img.complete) {
+            const preloadLink = document.createElement('link');
+            preloadLink.rel = 'preload';
+            preloadLink.as = 'image';
+            preloadLink.href = img.src;
+            document.head.appendChild(preloadLink);
+        }
+    });
 });
 
-// Performance monitoring
+// Performance monitoring with reduced logging
 if ('performance' in window) {
     window.addEventListener('load', () => {
-        // Log image loading performance
+        // Log image loading performance (reduced logging)
         const images = document.querySelectorAll('img');
-        const imageLoadTimes = [];
+        const loadedImages = Array.from(images).filter(img => img.complete).length;
         
-        images.forEach(img => {
-            if (img.complete) {
-                const loadTime = performance.now();
-                imageLoadTimes.push({
-                    src: img.src,
-                    loadTime: loadTime
-                });
-            }
-        });
-        
-        // Optional: Send performance data to analytics
-        console.log('Image loading performance:', imageLoadTimes);
+        console.log(`Image loading performance: ${loadedImages}/${images.length} images loaded`);
     });
 }
 

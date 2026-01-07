@@ -244,20 +244,18 @@ body {
 
 .hero-bg-video {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    min-width: 110%;
-    min-height: 110%;
-    width: auto;
-    height: auto;
-    transform: translate(-50%, -50%) scale(0.9);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    object-position: center center;
     /* iOS-specific optimizations */
     -webkit-playsinline: true;
-    -webkit-transform: translate(-50%, -50%) translateZ(0) scale(0.9);
     /* Ensure video is always visible */
     opacity: 1 !important;
     visibility: visible !important;
+    z-index: 0;
 }
 
 .hero-video-overlay {
@@ -306,6 +304,25 @@ body {
     display: none;
 }
 
+/* Desktop video specific styling */
+@media (min-width: 769px) {
+    .desktop-video {
+        display: block;
+        opacity: 1 !important;
+    }
+    
+    .mobile-video {
+        display: none;
+    }
+    
+    .hero-bg-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+    }
+}
+
 /* Show mobile video on mobile devices */
 @media (max-width: 768px) {
     .desktop-video {
@@ -316,15 +333,32 @@ body {
         display: block;
     }
     
-    /* Business site mobile video (smaller) */
+    /* Business site mobile video scaling */
     .hero:not(.coaching-hero) .mobile-video {
-        transform: translate(-50%, -50%) scale(0.4);
+        object-fit: cover;
+        object-position: center center;
+        transform: scale(1.2);
     }
     
-    /* Coaching site mobile video (larger to fill) */
+    /* Coaching site mobile video - same approach as business site */
     .coaching-hero .mobile-video {
-        transform: translate(-50%, -50%) scale(0.8);
-        min-height: 120%;
+        object-fit: cover;
+        object-position: center center;
+        transform: scale(1.2);
+    }
+    
+    /* Ensure video container covers full hero */
+    .hero-video-background {
+        height: 100vh;
+        min-height: 600px;
+    }
+    
+    /* Adjust hero content positioning for mobile */
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
 }
 
@@ -3436,4 +3470,107 @@ input, textarea {
 .debug, .dev-tools, .inspector {
     display: none !important;
     visibility: hidden !important;
+}
+
+/* ========================================
+   Video Performance Optimizations
+   ======================================== */
+
+/* Optimize video loading and rendering */
+.hero-bg-video {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+/* Video loading states */
+.hero-bg-video:not([data-loaded]) {
+    opacity: 0.8;
+}
+
+.hero-bg-video[data-loaded] {
+    opacity: 1 !important;
+}
+
+/* Optimize brand video */
+.brand-video {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.brand-video.loaded {
+    opacity: 1;
+}
+
+/* Image loading optimizations */
+img {
+    will-change: opacity;
+    transition: opacity 0.3s ease-in-out;
+}
+
+img.loaded {
+    opacity: 1 !important;
+}
+
+/* Portfolio image loading optimization */
+.portfolio-image img {
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.portfolio-image img:not(.loaded) {
+    opacity: 0.7;
+    transform: scale(0.95);
+}
+
+.portfolio-image img.loaded {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Partner logo loading optimization */
+.partner-logo-img {
+    transition: opacity 0.2s ease-in-out;
+}
+
+.partner-logo-img:not(.loaded) {
+    opacity: 0.8;
+}
+
+.partner-logo-img.loaded {
+    opacity: 1;
+}
+
+/* Reduce layout shifts during image loading */
+.hero-illustration,
+.portfolio-image img,
+.partner-logo-img {
+    background-color: transparent;
+    background-image: none;
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+    .hero-bg-video {
+        object-fit: cover;
+        object-position: center center;
+    }
+    
+    /* Reduce animations on mobile for better performance */
+    .hero-title,
+    .hero-subtitle,
+    .hero-buttons {
+        animation-duration: 0.5s;
+    }
+}
+
+/* Preload optimization */
+.preload-hint {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
 }

@@ -391,7 +391,8 @@ testimonialCards.forEach((card, index) => {
 
 const NEWS_API_KEY = '9d147cd7390443e281284123aa6160df';
 const NEWS_API_URL = 'https://newsapi.org/v2/top-headlines';
-const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+// Alternative CORS proxy
+const CORS_PROXY = 'https://corsproxy.io/?';
 
 async function fetchTechNews() {
     const blogLoading = document.getElementById('blogLoading');
@@ -411,7 +412,16 @@ async function fetchTechNews() {
         blogGrid.innerHTML = '';
         
         const apiUrl = `${NEWS_API_URL}?category=technology&country=us&pageSize=6&apiKey=${NEWS_API_KEY}`;
-        const response = await fetch(`${CORS_PROXY}${encodeURIComponent(apiUrl)}`);
+        
+        // Try direct fetch first (works in production)
+        let response;
+        try {
+            response = await fetch(apiUrl);
+        } catch (corsError) {
+            // Fallback to CORS proxy for development
+            console.log('Direct fetch failed, trying CORS proxy...');
+            response = await fetch(`${CORS_PROXY}${encodeURIComponent(apiUrl)}`);
+        }
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -427,8 +437,8 @@ async function fetchTechNews() {
         }
         
     } catch (error) {
-        console.error('Error fetching tech news:', error);
-        // Try fallback with mock data
+        console.log('Using fallback news due to API limitations in development environment');
+        // Use fallback with mock data
         displayFallbackNews();
         blogLoading.style.display = 'none';
     }

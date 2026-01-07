@@ -2321,16 +2321,20 @@ section {
     box-shadow: var(--shadow-lg);
     z-index: 999;
     transition: var(--transition);
-	outline: none;
+    outline: none;
+    text-decoration: none !important;
     /*animation: pulse 2s infinite;*/
 }
-.whatsapp-float:focus {  /* ADD THIS */
+
+.whatsapp-float:focus {
     outline: none;
+    text-decoration: none !important;
 }
 
 .whatsapp-float:hover {
     transform: scale(1.1);
     background-color: #20ba5a;
+    text-decoration: none !important;
 }
 
 .whatsapp-float i {

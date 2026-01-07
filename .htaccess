@@ -31,6 +31,11 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 <IfModule mod_expires.c>
     ExpiresActive on
     
+    # Videos - Light caching for performance
+    ExpiresByType video/mp4 "access plus 2 weeks"
+    ExpiresByType video/webm "access plus 2 weeks"
+    ExpiresByType video/ogg "access plus 2 weeks"
+    
     # Images
     ExpiresByType image/png "access plus 1 year"
     ExpiresByType image/jpg "access plus 1 year"
@@ -56,6 +61,12 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
 # Add cache control headers
 <IfModule mod_headers.c>
+    # Cache videos for 2 weeks - Light caching for performance
+    <FilesMatch "\.(mp4|webm|ogg)$">
+        Header set Cache-Control "max-age=1209600, public"
+        Header set Vary "Accept-Encoding"
+    </FilesMatch>
+    
     # Cache images for 1 year
     <FilesMatch "\.(png|jpg|jpeg|gif|svg|webp)$">
         Header set Cache-Control "max-age=31536000, public, immutable"

@@ -196,7 +196,11 @@
                 webkit-playsinline="true"
                 x-webkit-airplay="deny"
                 aria-label="Brelinx team working together background video">
-                <source src="./assets/videos/team.mp4" type="video/mp4">
+                <source src="./assets/brelinx%20video.mp4" type="video/mp4">
+                <!-- Fallback for browsers that don't support video -->
+                <div class="video-fallback">
+                    <div class="hero-fallback-bg"></div>
+                </div>
             </video>
             <!-- Video overlay for better text readability -->
             <div class="hero-video-overlay"></div>

@@ -770,6 +770,101 @@ document.addEventListener('DOMContentLoaded', () => {
 // Quick reply buttons - handled by individual event listeners in addQuickReplies function
 
 // ========================================
+// Hero Background Video Controls & iOS Optimization
+// ========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const heroVideos = document.querySelectorAll('.hero-bg-video');
+    
+    heroVideos.forEach((heroVideo, index) => {
+        if (heroVideo) {
+            console.log(`Hero video ${index + 1} found`);
+            
+            // Disable picture-in-picture
+            heroVideo.disablePictureInPicture = true;
+            
+            // Prevent PiP from being triggered
+            heroVideo.addEventListener('enterpictureinpicture', (e) => {
+                e.preventDefault();
+                if (document.exitPictureInPicture) {
+                    document.exitPictureInPicture();
+                }
+            });
+            
+            // Ensure video is always muted (required for autoplay)
+            heroVideo.muted = true;
+            heroVideo.defaultMuted = true;
+            
+            // Set volume to 0 as additional safety
+            heroVideo.volume = 0;
+            heroVideo.addEventListener('loadstart', () => {
+                console.log(`Hero video ${index + 1} loading started`);
+            });
+            
+            heroVideo.addEventListener('canplay', () => {
+                console.log(`Hero video ${index + 1} can play`);
+            });
+            
+            heroVideo.addEventListener('loadeddata', () => {
+                console.log(`Hero video ${index + 1} data loaded`);
+                heroVideo.style.opacity = '1';
+            });
+            
+            // Handle video loading errors
+            heroVideo.addEventListener('error', (e) => {
+                console.log(`Hero video ${index + 1} loading error:`, e);
+                console.log(`Hero video ${index + 1} error details:`, heroVideo.error);
+                // Show fallback if video fails to load
+                const fallback = heroVideo.parentElement.querySelector('.video-fallback');
+                if (fallback) {
+                    fallback.style.display = 'block';
+                    heroVideo.style.display = 'none';
+                }
+            });
+            
+            // iOS-specific video handling
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            
+            if (isIOS) {
+                // Force video to load on iOS
+                heroVideo.load();
+                
+                // Handle iOS autoplay restrictions
+                const playVideo = () => {
+                    heroVideo.play().catch(e => {
+                        console.log(`Hero video ${index + 1} autoplay prevented:`, e);
+                    });
+                };
+                
+                // Try to play video on user interaction
+                document.addEventListener('touchstart', playVideo, { once: true });
+                document.addEventListener('click', playVideo, { once: true });
+            }
+            
+            // Optimize video performance
+            heroVideo.addEventListener('loadeddata', () => {
+                // Video is ready to play
+                heroVideo.style.opacity = '1';
+            });
+            
+            // Ensure video plays when in viewport (for performance)
+            const heroVideoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        heroVideo.play().catch(e => console.log(`Hero video ${index + 1} play failed:`, e));
+                    } else {
+                        // Don't pause hero videos as they should always play
+                        // heroVideo.pause();
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            heroVideoObserver.observe(heroVideo);
+        }
+    });
+});
+
+// ========================================
 // Brand Video Controls & iPhone Optimization
 // ========================================
 

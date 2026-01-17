@@ -14,11 +14,11 @@ updateThemeIcon(currentTheme);
 themeToggle.addEventListener('click', () => {
     const currentTheme = body.getAttribute('data-theme');
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    
+
     body.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
-    
+
     // Add animation to theme toggle button
     themeToggle.style.transform = 'rotate(360deg)';
     setTimeout(() => {
@@ -46,7 +46,7 @@ const navMenu = document.querySelector('.nav-menu');
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
-    
+
     // Prevent scrolling when menu is open
     if (navMenu.classList.contains('active')) {
         body.style.overflow = 'hidden';
@@ -74,7 +74,7 @@ document.addEventListener('click', (e) => {
     }
 });
 
-    
+
 // ========================================
 // Smooth Scrolling
 // ========================================
@@ -105,13 +105,13 @@ let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    
+
     if (currentScroll > 100) {
         header.classList.add('scrolled');
     } else {
         header.classList.remove('scrolled');
     }
-    
+
     lastScroll = currentScroll;
 });
 
@@ -159,23 +159,23 @@ const submitBtn = document.getElementById('submitBtn');
 
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    
+
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const message = document.getElementById('message').value;
-    
+
     if (name && email && message) {
         // Format WhatsApp message
         const whatsappMessage = `Hi, my name is ${name}. Email: ${email}. Message: ${message}`;
         const encodedMessage = encodeURIComponent(whatsappMessage);
         const whatsappUrl = `https://wa.me/27785002274?text=${encodedMessage}`;
-        
+
         // Open WhatsApp
         window.open(whatsappUrl, '_blank');
-        
+
         // Show success notification
         showNotification('Redirecting to WhatsApp...', 'success');
-        
+
         // Reset form
         contactForm.reset();
     } else {
@@ -193,7 +193,7 @@ function showNotification(message, type = 'success') {
     if (existingNotification) {
         existingNotification.remove();
     }
-    
+
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.style.cssText = `
@@ -210,9 +210,9 @@ function showNotification(message, type = 'success') {
         max-width: 300px;
     `;
     notification.textContent = message;
-    
+
     document.body.appendChild(notification);
-    
+
     // Remove notification after 5 seconds
     setTimeout(() => {
         notification.style.animation = 'slideOutRight 0.3s ease';
@@ -257,13 +257,13 @@ const sections = document.querySelectorAll('section[id]');
 
 function highlightNavLink() {
     const scrollY = window.pageYOffset;
-    
+
     sections.forEach(section => {
         const sectionHeight = section.offsetHeight;
         const sectionTop = section.offsetTop - 100;
         const sectionId = section.getAttribute('id');
         const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-        
+
         if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
             navLinks.forEach(link => link.classList.remove('active-link'));
             if (navLink) {
@@ -302,7 +302,7 @@ const statsObserver = new IntersectionObserver((entries) => {
             stats.forEach(stat => {
                 const target = stat.textContent;
                 const isNumber = !isNaN(parseInt(target));
-                
+
                 if (isNumber) {
                     const targetNumber = parseInt(target);
                     animateCounter(stat, 0, targetNumber, 2000);
@@ -321,7 +321,7 @@ function animateCounter(element, start, end, duration) {
     const range = end - start;
     const increment = range / (duration / 16);
     let current = start;
-    
+
     const timer = setInterval(() => {
         current += increment;
         if (current >= end) {
@@ -340,11 +340,11 @@ function animateCounter(element, start, end, duration) {
 const formInputs = document.querySelectorAll('.form-group input, .form-group textarea');
 
 formInputs.forEach(input => {
-    input.addEventListener('focus', function() {
+    input.addEventListener('focus', function () {
         this.parentElement.style.transform = 'scale(1.02)';
     });
-    
-    input.addEventListener('blur', function() {
+
+    input.addEventListener('blur', function () {
         this.parentElement.style.transform = 'scale(1)';
     });
 });
@@ -398,46 +398,48 @@ async function fetchTechNews() {
     const blogLoading = document.getElementById('blogLoading');
     const blogError = document.getElementById('blogError');
     const blogGrid = document.getElementById('blogGrid');
-    
+
     // Check if blog elements exist (only on index.html)
     if (!blogLoading || !blogError || !blogGrid) {
         console.log('Blog elements not found - skipping tech news loading');
         return;
     }
-    
+
     try {
         // Show loading state
         blogLoading.style.display = 'block';
         blogError.style.display = 'none';
         blogGrid.innerHTML = '';
-        
+
         const apiUrl = `${NEWS_API_URL}?category=technology&country=us&pageSize=6&apiKey=${NEWS_API_KEY}`;
-        
-        // Try direct fetch first (works in production)
-        let response;
+
+        // Use CORS proxy directly to avoid 426 Upgrade Required errors from browser
+        // newsapi.org free tier blocks direct browser access
         try {
-            response = await fetch(apiUrl);
-        } catch (corsError) {
-            // Fallback to CORS proxy for development
-            console.log('Direct fetch failed, trying CORS proxy...');
-            response = await fetch(`${CORS_PROXY}${encodeURIComponent(apiUrl)}`);
+            console.log('Fetching news via proxy...');
+            const response = await fetch(`${CORS_PROXY}${encodeURIComponent(apiUrl)}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.status === 'ok' && data.articles && data.articles.length > 0) {
+                displayTechNews(data.articles);
+                blogLoading.style.display = 'none';
+            } else {
+                throw new Error('No articles found');
+            }
+        } catch (proxyError) {
+            console.log('Proxy fetch failed or limited, using fallback data:', proxyError.message);
+            // Verify if we can fall back to direct (unlikely to work if proxy failed due to network, but worth a try if it's just proxy down?)
+            // Actually, direct will 426, so better to just go to fallback data.
+            throw proxyError;
         }
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.status === 'ok' && data.articles && data.articles.length > 0) {
-            displayTechNews(data.articles);
-            blogLoading.style.display = 'none';
-        } else {
-            throw new Error('No articles found');
-        }
-        
+
     } catch (error) {
-        console.log('Using fallback news due to API limitations in development environment');
+        console.log('Using fallback news due to API limitations:', error.message);
         // Use fallback with mock data
         displayFallbackNews();
         blogLoading.style.display = 'none';
@@ -446,39 +448,39 @@ async function fetchTechNews() {
 
 function displayTechNews(articles) {
     const blogGrid = document.getElementById('blogGrid');
-    
+
     // Check if blogGrid exists
     if (!blogGrid) {
         console.log('Blog grid not found - skipping news display');
         return;
     }
-    
+
     articles.forEach((article, index) => {
         // Skip articles without title or description
         if (!article.title || !article.description) return;
-        
+
         const articleCard = document.createElement('article');
         articleCard.className = 'blog-card';
         articleCard.style.opacity = '0';
         articleCard.style.transform = 'translateY(30px)';
-        
+
         const publishedDate = new Date(article.publishedAt).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
             day: 'numeric'
         });
-        
+
         const sourceName = article.source?.name || 'Tech News';
         const imageUrl = article.urlToImage;
         const title = article.title.length > 80 ? article.title.substring(0, 80) + '...' : article.title;
         const description = article.description.length > 150 ? article.description.substring(0, 150) + '...' : article.description;
-        
+
         articleCard.innerHTML = `
             <div class="blog-image">
-                ${imageUrl ? 
-                    `<img src="${imageUrl}" alt="${title}" onerror="this.parentElement.innerHTML='<div class=\\'blog-image-placeholder\\'><i class=\\'fas fa-newspaper\\'></i></div>'">` :
-                    `<div class="blog-image-placeholder"><i class="fas fa-newspaper"></i></div>`
-                }
+                ${imageUrl ?
+                `<img src="${imageUrl}" alt="${title}" onerror="this.parentElement.innerHTML='<div class=\\'blog-image-placeholder\\'><i class=\\'fas fa-newspaper\\'></i></div>'">` :
+                `<div class="blog-image-placeholder"><i class="fas fa-newspaper"></i></div>`
+            }
                 <div class="blog-source">${sourceName}</div>
             </div>
             <div class="blog-content">
@@ -495,9 +497,9 @@ function displayTechNews(articles) {
                 </a>
             </div>
         `;
-        
+
         blogGrid.appendChild(articleCard);
-        
+
         // Animate card appearance
         setTimeout(() => {
             articleCard.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -558,7 +560,7 @@ function displayFallbackNews() {
             source: { name: "Tech News" }
         }
     ];
-    
+
     displayTechNews(fallbackArticles);
 }
 
@@ -639,48 +641,48 @@ const knowledgeBase = {
 
 const responses = {
     greetings: "Hello! 👋 Welcome to Brelinx. I'm here to help you with any questions about our IT services across South Africa. What would you like to know?",
-    
+
     services: "We offer comprehensive business IT services nationwide:\n\n🌐 Website Development\n🖥️ Custom Software Development\n📱 Mobile Applications\n☁️ Cloud Solutions\n🔒 Cybersecurity\n💾 Data Management & Analytics\n🛠️ IT Support 24/7\n🔧 System Integration\n📈 Digital Transformation\n\n🎓 Looking for programming coaching? Visit our Student Portal: brelinx.com/coaching.html\n\nWhich business service interests you?",
-    
+
     website: "Our Website Development services include:\n\n🌐 Professional, responsive websites\n🌐 Brand showcase design\n🌐 Business growth focused\n🌐 Mobile-optimized\n🌐 SEO-friendly\n\nWe create websites that drive business growth online. Ready to build your online presence?",
-    
+
     software: "Our Software Development services include:\n\n✨ Custom software solutions\n✨ Web applications\n✨ Enterprise systems\n✨ API development\n✨ System integration\n\nWe design solutions tailored to streamline your business operations and drive growth. Would you like to discuss your project?",
-    
+
     mobile: "We build exceptional Mobile Applications:\n\n� Natnive iOS & Android apps\n�  Cross-platform solutions\n� U‍ser-friendly interfaces\n📱 Performance optimized\n\nWe create apps that deliver outstanding user experiences. Interested in building an app?",
-    
+
     coaching: "🎓 Programming Coaching is now on our dedicated Student Portal!\n\nVisit: brelinx.com/coaching.html for:\n\n👨‍💻 One-on-one online sessions\n👨‍💻 Personalized learning pace\n👨‍💻 Languages: Python, JavaScript, Java, React, SQL, HTML/CSS\n👨‍💻 Beginner to advanced levels\n👨‍💻 Real-world projects\n👨‍💻 Flexible scheduling\n👨‍💻 Student-friendly pricing\n\nReady to start your coding journey?",
-    
+
     assignment: "📚 Assignment Help is available on our Student Portal!\n\nVisit: brelinx.com/coaching.html for:\n\n📚 Understanding complex concepts\n📚 Code debugging & optimization\n📚 Project completion support\n📚 Exam preparation\n📚 Portfolio projects\n📚 Student-friendly rates\n\nWe help you learn and complete your work with confidence. Need help with an assignment?",
-    
+
     cloud: "Our Cloud Solutions include:\n\n☁️ Cloud infrastructure setup\n☁️ Migration services\n☁️ AWS, Azure, Google Cloud\n☁️ Scalable architecture\n☁️ Cost optimization\n\nTransform your business with modern cloud technology!",
-    
+
     security: "Cybersecurity Services:\n\n� Secu+rity audits\n🔒 Threat monitoring\n🔒 Data protection\n🔒 Compliance support\n🔒 Incident response\n\nProtect your business with comprehensive security solutions!",
-    
+
     contact: "Get in touch with us:\n\n📞 Phone: +27 63 572 2080\n💬 WhatsApp: +27 78 500 2274\n�  Location: The Glen Road, Johannesburg, GP 2090\n\nWe serve clients across South Africa! You can also fill out our contact form on the website. How would you prefer to reach us?",
-    
+
     pricing: "Our pricing varies based on:\n\n💰 Project scope and complexity\n💰 Service type\n💰 Timeline\n💰 Support requirements\n\nFor coaching: We offer flexible hourly rates.\nFor businesses: Competitive rates across South Africa.\n\nContact us for a personalized quote! Would you like to discuss your specific needs?",
-    
+
     location: "We're located at:\n\n📍 The Glen Road\nJohannesburg, GP 2090\nSouth Africa 🇿🇦\n\nWe serve clients nationwide across South Africa with online services. Visit our Contact section for the map!",
-    
+
     about: "Brelinx is your trusted business IT partner across South Africa! 🚀\n\nWe're passionate about delivering innovative IT services and software solutions that transform businesses nationwide.\n\n✅ 100+ Business Projects Completed\n✅ 50+ Enterprise Clients\n✅ 24/7 Business Support Available\n✅ 6+ Years Industry Experience\n\n🎓 Students: Visit brelinx.com/coaching.html for programming coaching!\n\nOur commitment to excellence and customer satisfaction sets us apart. What would you like to know more about?",
-    
+
     faq: "Check out our FAQ section for common questions about:\n\n❓ IT services across South Africa\n❓ Programming coaching for students\n❓ Software development pricing\n❓ Working with small businesses\n❓ University assignment help\n❓ What makes us different\n\nYou can find detailed answers in the FAQ section on our website!",
-    
+
     nationwide: "Yes! We provide services nationwide across South Africa:\n\n🇿🇦 All provinces covered\n🇿🇦 Remote online services\n🇿🇦 Local support from Johannesburg\n🇿🇦 Flexible scheduling for all time zones\n\nWhether you're in Cape Town, Durban, Pretoria, or anywhere in SA - we're here to help!",
-    
+
     default: "I'm here to help with business IT services! I can answer questions about:\n\n• Professional IT services\n• Website & software development\n• Mobile applications\n• Cloud solutions & cybersecurity\n• Business pricing & consultations\n• Nationwide service coverage\n\n🎓 Students: Visit brelinx.com/coaching.html for programming coaching!\n\nWhat would you like to know? Or chat with us directly on WhatsApp!"
 };
 
 // Find best match
 function findBestMatch(userMessage) {
     const message = userMessage.toLowerCase();
-    
+
     for (const [category, keywords] of Object.entries(knowledgeBase)) {
         if (keywords.some(keyword => message.includes(keyword))) {
             return category;
         }
     }
-    
+
     return 'default';
 }
 
@@ -688,19 +690,19 @@ function findBestMatch(userMessage) {
 function addMessage(message, isUser = false) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
-    
+
     const avatar = document.createElement('div');
     avatar.className = 'message-avatar';
     avatar.innerHTML = isUser ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
-    
+
     const content = document.createElement('div');
     content.className = 'message-content';
     content.textContent = message;
     content.style.whiteSpace = 'pre-line';
-    
+
     messageDiv.appendChild(avatar);
     messageDiv.appendChild(content);
-    
+
     chatbotMessages.appendChild(messageDiv);
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 }
@@ -710,15 +712,15 @@ function showTyping() {
     const typingDiv = document.createElement('div');
     typingDiv.className = 'message bot';
     typingDiv.id = 'typing-indicator';
-    
+
     const avatar = document.createElement('div');
     avatar.className = 'message-avatar';
     avatar.innerHTML = '<i class="fas fa-robot"></i>';
-    
+
     const indicator = document.createElement('div');
     indicator.className = 'typing-indicator';
     indicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-    
+
     typingDiv.appendChild(avatar);
     typingDiv.appendChild(indicator);
     chatbotMessages.appendChild(typingDiv);
@@ -734,21 +736,21 @@ function removeTyping() {
 // Handle user message
 function handleUserMessage(message) {
     if (!message.trim()) return;
-    
+
     // Add user message
     addMessage(message, true);
     chatbotInput.value = '';
-    
+
     // Show typing
     showTyping();
-    
+
     // Simulate thinking delay
     setTimeout(() => {
         removeTyping();
         const category = findBestMatch(message);
         const response = responses[category];
         addMessage(response);
-        
+
         // Add quick replies after certain responses
         if (category === 'services' || category === 'default') {
             addQuickReplies();
@@ -767,10 +769,10 @@ function addQuickReplies() {
             <button class="quick-reply-btn" data-message="How can I contact you?">Contact</button>
             <button class="quick-reply-btn" data-message="What are your prices?">Pricing</button>
         `;
-        
+
         const messageContent = lastMessage.querySelector('.message-content') || lastMessage.lastElementChild;
         messageContent.parentElement.appendChild(quickRepliesDiv);
-        
+
         // Add event listeners to new quick reply buttons
         quickRepliesDiv.querySelectorAll('.quick-reply-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -810,29 +812,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     const heroVideos = document.querySelectorAll('.hero-bg-video');
-    
+
     // Detect if user is on mobile
     const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
+
     heroVideos.forEach((heroVideo, index) => {
         if (heroVideo) {
             // Check if this video should be shown on current device
             const isDesktopVideo = heroVideo.classList.contains('desktop-video');
             const isMobileVideo = heroVideo.classList.contains('mobile-video');
-            
+
             // Skip processing if video shouldn't be shown on current device
             if ((isMobile && isDesktopVideo) || (!isMobile && isMobileVideo)) {
                 return;
             }
-            
+
             console.log(`Hero video ${index + 1} found (${isMobile ? 'mobile' : 'desktop'} version)`);
-            
+
             // Optimize video loading
             heroVideo.preload = 'metadata'; // Changed from 'auto' for better performance
-            
+
             // Disable picture-in-picture
             heroVideo.disablePictureInPicture = true;
-            
+
             // Prevent PiP from being triggered
             heroVideo.addEventListener('enterpictureinpicture', (e) => {
                 e.preventDefault();
@@ -840,34 +842,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.exitPictureInPicture();
                 }
             });
-            
+
             // Ensure video is always muted (required for autoplay)
             heroVideo.muted = true;
             heroVideo.defaultMuted = true;
-            
+
             // Set volume to 0 as additional safety
             heroVideo.volume = 0;
-            
+
             // Optimized loading events
             heroVideo.addEventListener('loadstart', () => {
                 console.log(`Hero video ${index + 1} loading started`);
             });
-            
+
             heroVideo.addEventListener('canplay', () => {
                 console.log(`Hero video ${index + 1} can play`);
                 // Start playing as soon as possible
                 heroVideo.play().catch(e => {
-                    console.log(`Hero video ${index + 1} autoplay failed:`, e);
+                    // Ignore AbortError which is common when scrubbing/loading
+                    if (e.name !== 'AbortError') {
+                        console.log(`Hero video ${index + 1} autoplay failed:`, e);
+                    }
                 });
             });
-            
+
             heroVideo.addEventListener('loadeddata', () => {
                 console.log(`Hero video ${index + 1} data loaded`);
                 heroVideo.style.opacity = '1';
                 heroVideo.style.transition = 'opacity 0.5s ease';
                 heroVideo.setAttribute('data-loaded', 'true');
             });
-            
+
             // Handle video loading errors gracefully
             heroVideo.addEventListener('error', (e) => {
                 console.log(`Hero video ${index + 1} loading error:`, e);
@@ -879,38 +884,42 @@ document.addEventListener('DOMContentLoaded', () => {
                     heroVideo.style.display = 'none';
                 }
             });
-            
+
             // iOS-specific video handling
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            
+
             if (isIOS) {
                 // Force video to load on iOS
                 heroVideo.load();
-                
+
                 // Handle iOS autoplay restrictions
                 const playVideo = () => {
                     heroVideo.play().catch(e => {
                         console.log(`Hero video ${index + 1} autoplay prevented:`, e);
                     });
                 };
-                
+
                 // Try to play video on user interaction
                 document.addEventListener('touchstart', playVideo, { once: true });
                 document.addEventListener('click', playVideo, { once: true });
             }
-            
+
             // Ensure video plays when in viewport (for performance)
             const heroVideoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        heroVideo.play().catch(e => console.log(`Hero video ${index + 1} play failed:`, e));
+                        if (entry.isIntersecting) {
+                            heroVideo.play().catch(e => {
+                                if (e.name !== 'AbortError') console.log(`Hero video ${index + 1} play failed:`, e);
+                            });
+                        }
                     }
                     // Don't pause hero videos as they should always play when visible
                 });
             }, { threshold: 0.1 });
-            
+
             heroVideoObserver.observe(heroVideo);
-            
+
             // Preload video metadata for faster startup
             setTimeout(() => {
                 if (heroVideo.readyState < 1) {
@@ -927,33 +936,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     const brandVideo = document.querySelector('.brand-video');
-    
+
     if (brandVideo) {
         console.log('Video element found');
-        
+
         // Disable picture-in-picture
         brandVideo.disablePictureInPicture = true;
-        
+
         // Prevent PiP from being triggered
         brandVideo.addEventListener('enterpictureinpicture', (e) => {
             e.preventDefault();
             document.exitPictureInPicture();
         });
-        
+
         // Debug video loading
         brandVideo.addEventListener('loadstart', () => {
             console.log('Video loading started');
         });
-        
+
         brandVideo.addEventListener('canplay', () => {
             console.log('Video can play');
         });
-        
+
         brandVideo.addEventListener('loadeddata', () => {
             console.log('Video data loaded');
             brandVideo.style.opacity = '1';
         });
-        
+
         // Handle video loading errors
         brandVideo.addEventListener('error', (e) => {
             console.log('Video loading error:', e);
@@ -965,26 +974,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 brandVideo.style.display = 'none';
             }
         });
-        
+
         // iPhone-specific video handling
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        
+
         if (isIOS) {
             // Force video to load on iOS
             brandVideo.load();
-            
+
             // Handle iOS autoplay restrictions
             const playVideo = () => {
                 brandVideo.play().catch(e => {
                     console.log('Video autoplay prevented:', e);
                 });
             };
-            
+
             // Try to play video on user interaction
             document.addEventListener('touchstart', playVideo, { once: true });
             document.addEventListener('click', playVideo, { once: true });
         }
-        
+
         // Handle video loading errors
         brandVideo.addEventListener('error', (e) => {
             console.log('Video loading error:', e);
@@ -995,24 +1004,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 brandVideo.style.display = 'none';
             }
         });
-        
+
         // Optimize video performance
         brandVideo.addEventListener('loadeddata', () => {
             // Video is ready to play
             brandVideo.style.opacity = '1';
         });
-        
+
         // Pause video when not in viewport (performance optimization)
         const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    brandVideo.play().catch(e => console.log('Play failed:', e));
+                    brandVideo.play().catch(e => {
+                        if (e.name !== 'AbortError') console.log('Play failed:', e);
+                    });
                 } else {
                     brandVideo.pause();
                 }
             });
         }, { threshold: 0.5 });
-        
+
         videoObserver.observe(brandVideo);
     }
 });
@@ -1020,22 +1031,22 @@ document.addEventListener('DOMContentLoaded', () => {
 // FAQ Functionality
 // ========================================
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const faqItems = document.querySelectorAll('.faq-item');
-    
+
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
-        
+
         question.addEventListener('click', () => {
             const isActive = item.classList.contains('active');
-            
+
             // Close all other FAQ items
             faqItems.forEach(otherItem => {
                 if (otherItem !== item) {
                     otherItem.classList.remove('active');
                 }
             });
-            
+
             // Toggle current item
             if (isActive) {
                 item.classList.remove('active');
@@ -1049,7 +1060,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ========================================
 
 // Basic keyboard protection (only Ctrl+S save)
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     // Only disable Ctrl+S (save)
     if (e.ctrlKey && e.key === 's') {
         e.preventDefault();
@@ -1062,7 +1073,7 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const img = entry.target;
-            
+
             // Preload the image for smoother loading
             const imageLoader = new Image();
             imageLoader.onload = () => {
@@ -1070,24 +1081,24 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
                 img.style.opacity = '1';
                 img.style.background = 'transparent';
                 img.classList.add('loaded');
-                
+
                 // Add smooth transition
                 img.style.transition = 'opacity 0.3s ease';
             };
-            
+
             imageLoader.onerror = () => {
                 // Handle image loading error
                 console.warn('Image failed to load:', img.src);
                 img.style.opacity = '0.5';
                 img.alt = 'Image unavailable';
             };
-            
+
             // Start loading the image
             imageLoader.src = img.src;
-            
+
             // Basic protection
             img.draggable = false;
-            
+
             // Stop observing this image
             observer.unobserve(img);
         }
@@ -1101,7 +1112,7 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
 // Enhanced image loading with immediate fallback
 document.addEventListener('DOMContentLoaded', () => {
     const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-    
+
     // Immediate fallback for critical images
     setTimeout(() => {
         lazyImages.forEach(img => {
@@ -1114,37 +1125,37 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, 500); // Reduced fallback time for better performance
-    
+
     lazyImages.forEach(img => {
         // Make sure images are visible by default
         img.style.opacity = '1';
         img.style.background = 'transparent';
         img.draggable = false;
-        
+
         // Use intersection observer for optimization
         imageObserver.observe(img);
     });
-    
+
     // Basic protection for all images (including hero images)
     const allImages = document.querySelectorAll('img');
     allImages.forEach(img => {
         img.draggable = false;
         img.style.background = 'transparent';
-        
+
         // Add error handling for all images
-        img.addEventListener('error', function() {
+        img.addEventListener('error', function () {
             console.warn('Image failed to load:', this.src);
             this.style.opacity = '0.5';
             this.alt = 'Image unavailable';
         });
-        
+
         // Add load event for smooth appearance
-        img.addEventListener('load', function() {
+        img.addEventListener('load', function () {
             this.style.opacity = '1';
             this.style.transition = 'opacity 0.3s ease';
         });
     });
-    
+
     // Ensure hero images are always visible (they have loading="eager")
     const heroImages = document.querySelectorAll('.hero-illustration');
     heroImages.forEach(img => {
@@ -1152,10 +1163,10 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.background = 'transparent';
         img.style.display = 'block';
         img.draggable = false;
-        
+
         // Debug hero image loading
         console.log('Hero image found:', img.src);
-        
+
         // Force load if not loaded
         if (!img.complete) {
             console.log('Hero image not complete, forcing load...');
@@ -1185,7 +1196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         preloadLink.href = heroImg.src;
         document.head.appendChild(preloadLink);
     }
-    
+
     // Preload portfolio images for better performance
     const portfolioImages = document.querySelectorAll('.portfolio-image img');
     portfolioImages.forEach((img, index) => {
@@ -1206,7 +1217,7 @@ if ('performance' in window) {
         // Log image loading performance (reduced logging)
         const images = document.querySelectorAll('img');
         const loadedImages = Array.from(images).filter(img => img.complete).length;
-        
+
         console.log(`Image loading performance: ${loadedImages}/${images.length} images loaded`);
     });
 }
@@ -1216,7 +1227,7 @@ if ('performance' in window) {
 // ========================================
 
 // Disable key combinations for viewing source
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     // Only disable Ctrl+U (View Source)
     if (e.ctrlKey && e.key === 'u') {
         e.preventDefault();

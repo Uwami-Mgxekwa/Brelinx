@@ -88,12 +88,16 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
     RewriteEngine on
     RewriteCond %{HTTP_REFERER} !^$
     RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?brelinx\.com [NC]
+    RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?localhost [NC]
+    RewriteCond %{HTTP_REFERER} !^http(s)?://127\.0\.0\.1 [NC]
     RewriteRule \.(jpg|jpeg|png|gif|svg|webp)$ - [NC,F,L]
 </IfModule>
 
 # Prevent direct access to image files from external sites
 RewriteCond %{HTTP_REFERER} !^$
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?brelinx\.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?localhost [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://127\.0\.0\.1 [NC]
 RewriteRule \.(png|jpg|jpeg|gif|svg|webp)$ /assets/watermark.png [R,L]
 
 # Disable directory browsing

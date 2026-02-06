@@ -152,33 +152,92 @@ contactItems.forEach((item, index) => {
 });
 
 // ========================================
-// Contact Form Handling
+// Contact Form Handling with EmailJS
 // ========================================
 
+const contactForm = document.getElementById('contactForm');
 const submitBtn = document.getElementById('submitBtn');
+const formStatus = document.getElementById('formStatus');
+const btnText = submitBtn.querySelector('.btn-text');
+const btnLoading = submitBtn.querySelector('.btn-loading');
 
-submitBtn.addEventListener('click', (e) => {
+contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
     const message = document.getElementById('message').value;
 
-    if (name && email && message) {
-        // Format WhatsApp message
-        const whatsappMessage = `Hi, my name is ${name}. Email: ${email}. Message: ${message}`;
-        const encodedMessage = encodeURIComponent(whatsappMessage);
-        const whatsappUrl = `https://wa.me/27785002274?text=${encodedMessage}`;
+    if (name && email && phone && message) {
+        // Show loading state
+        submitBtn.disabled = true;
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline-block';
+        formStatus.style.display = 'none';
 
-        // Open WhatsApp
-        window.open(whatsappUrl, '_blank');
+        // Get current time
+        const now = new Date();
+        const time = now.toLocaleString('en-ZA', {
+            dateStyle: 'medium',
+            timeStyle: 'short'
+        });
 
-        // Show success notification
-        showNotification('Redirecting to WhatsApp...', 'success');
+        // EmailJS template parameters
+        const templateParams = {
+            name: name,
+            email: email,
+            phone: phone,
+            message: message,
+            time: time
+        };
 
-        // Reset form
-        contactForm.reset();
+        // Send email using EmailJS
+        emailjs.send('service_swdllg9', 'template_m749al5', templateParams)
+            .then((response) => {
+                console.log('SUCCESS!', response.status, response.text);
+                
+                // Show success message
+                formStatus.innerHTML = '<i class="fas fa-check-circle"></i> Message sent successfully! We\'ll get back to you soon.';
+                formStatus.className = 'form-status success';
+                formStatus.style.display = 'block';
+                
+                // Show success notification
+                showNotification('Message sent successfully! We\'ll get back to you soon.', 'success');
+                
+                // Reset form
+                contactForm.reset();
+                
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline-block';
+                btnLoading.style.display = 'none';
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    formStatus.style.display = 'none';
+                }, 5000);
+            })
+            .catch((error) => {
+                console.error('FAILED...', error);
+                
+                // Show error message
+                formStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed to send message. Please try again or contact us via WhatsApp.';
+                formStatus.className = 'form-status error';
+                formStatus.style.display = 'block';
+                
+                // Show error notification
+                showNotification('Failed to send message. Please try again.', 'error');
+                
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline-block';
+                btnLoading.style.display = 'none';
+            });
     } else {
+        formStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill in all fields.';
+        formStatus.className = 'form-status error';
+        formStatus.style.display = 'block';
         showNotification('Please fill in all fields', 'error');
     }
 });

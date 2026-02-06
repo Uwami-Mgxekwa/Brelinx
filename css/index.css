@@ -1483,6 +1483,103 @@ section {
 }
 
 /* ========================================
+   Platforms Section
+   ======================================== */
+
+.platforms-section {
+    background-color: var(--bg-primary);
+    padding: 4rem 0;
+}
+
+.platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.platform-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+    transition: var(--transition);
+    border: none;
+}
+
+.platform-item:hover {
+    transform: translateY(-10px);
+}
+
+.platform-logo {
+    width: 120px;
+    height: 60px;
+    object-fit: contain;
+    transition: var(--transition);
+    opacity: 0.5;
+}
+
+.platform-item:hover .platform-logo {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.platform-item p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 0;
+    text-align: center;
+    transition: var(--transition);
+    opacity: 0.6;
+}
+
+.platform-item:hover p {
+    color: var(--primary-color);
+    opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .platforms-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .platforms-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .platform-logo {
+        width: 100px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .platforms-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .platform-logo {
+        width: 90px;
+        height: 45px;
+    }
+    
+    .platform-item p {
+        font-size: 0.8rem;
+    }
+}
+
+/* ========================================
    Education & Coaching Section
    ======================================== */
 

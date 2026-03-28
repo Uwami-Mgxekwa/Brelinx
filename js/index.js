@@ -195,7 +195,6 @@ contactForm.addEventListener('submit', (e) => {
         // Send email using EmailJS
         emailjs.send('service_swdllg9', 'template_m749al5', templateParams)
             .then((response) => {
-                console.log('SUCCESS!', response.status, response.text);
                 
                 // Show success message
                 formStatus.innerHTML = '<i class="fas fa-check-circle"></i> Message sent successfully! We\'ll get back to you soon.';
@@ -219,7 +218,6 @@ contactForm.addEventListener('submit', (e) => {
                 }, 5000);
             })
             .catch((error) => {
-                console.error('FAILED...', error);
                 
                 // Show error message
                 formStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed to send message. Please try again or contact us via WhatsApp.';
@@ -453,7 +451,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentYearElement) {
         const currentYear = new Date().getFullYear();
         currentYearElement.textContent = currentYear;
-        console.log(`Copyright year automatically updated to ${currentYear}`);
     }
 });
 
@@ -698,10 +695,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            console.log(`Hero video ${index + 1} found (${isMobile ? 'mobile' : 'desktop'} version)`);
-
             // Optimize video loading
-            heroVideo.preload = 'metadata'; // Changed from 'auto' for better performance
+            heroVideo.preload = 'metadata';
 
             // Disable picture-in-picture
             heroVideo.disablePictureInPicture = true;
@@ -723,22 +718,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Optimized loading events
             heroVideo.addEventListener('loadstart', () => {
-                console.log(`Hero video ${index + 1} loading started`);
             });
 
             heroVideo.addEventListener('canplay', () => {
-                console.log(`Hero video ${index + 1} can play`);
-                // Start playing as soon as possible
                 heroVideo.play().catch(e => {
-                    // Ignore AbortError which is common when scrubbing/loading
                     if (e.name !== 'AbortError') {
-                        console.log(`Hero video ${index + 1} autoplay failed:`, e);
+                        // autoplay failed silently
                     }
                 });
             });
 
             heroVideo.addEventListener('loadeddata', () => {
-                console.log(`Hero video ${index + 1} data loaded`);
                 heroVideo.style.opacity = '1';
                 heroVideo.style.transition = 'opacity 0.5s ease';
                 heroVideo.setAttribute('data-loaded', 'true');
@@ -746,9 +736,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Handle video loading errors gracefully
             heroVideo.addEventListener('error', (e) => {
-                console.log(`Hero video ${index + 1} loading error:`, e);
-                console.log(`Hero video ${index + 1} error details:`, heroVideo.error);
-                // Show fallback if video fails to load
                 const fallback = heroVideo.parentElement.querySelector('.video-fallback');
                 if (fallback) {
                     fallback.style.display = 'block';
@@ -765,9 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Handle iOS autoplay restrictions
                 const playVideo = () => {
-                    heroVideo.play().catch(e => {
-                        console.log(`Hero video ${index + 1} autoplay prevented:`, e);
-                    });
+                    heroVideo.play().catch(() => {});
                 };
 
                 // Try to play video on user interaction
@@ -781,7 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (entry.isIntersecting) {
                         if (entry.isIntersecting) {
                             heroVideo.play().catch(e => {
-                                if (e.name !== 'AbortError') console.log(`Hero video ${index + 1} play failed:`, e);
+                                if (e.name !== 'AbortError') { /* play failed silently */ }
                             });
                         }
                     }
@@ -809,8 +794,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const brandVideo = document.querySelector('.brand-video');
 
     if (brandVideo) {
-        console.log('Video element found');
-
         // Disable picture-in-picture
         brandVideo.disablePictureInPicture = true;
 
@@ -820,25 +803,18 @@ document.addEventListener('DOMContentLoaded', () => {
             document.exitPictureInPicture();
         });
 
-        // Debug video loading
+        // Video loading events
         brandVideo.addEventListener('loadstart', () => {
-            console.log('Video loading started');
         });
 
         brandVideo.addEventListener('canplay', () => {
-            console.log('Video can play');
         });
 
         brandVideo.addEventListener('loadeddata', () => {
-            console.log('Video data loaded');
             brandVideo.style.opacity = '1';
         });
 
-        // Handle video loading errors
         brandVideo.addEventListener('error', (e) => {
-            console.log('Video loading error:', e);
-            console.log('Video error details:', brandVideo.error);
-            // Show fallback if video fails to load
             const fallback = document.querySelector('.video-fallback');
             if (fallback) {
                 fallback.style.display = 'flex';
@@ -855,9 +831,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Handle iOS autoplay restrictions
             const playVideo = () => {
-                brandVideo.play().catch(e => {
-                    console.log('Video autoplay prevented:', e);
-                });
+                brandVideo.play().catch(() => {});
             };
 
             // Try to play video on user interaction
@@ -865,10 +839,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.addEventListener('click', playVideo, { once: true });
         }
 
-        // Handle video loading errors
         brandVideo.addEventListener('error', (e) => {
-            console.log('Video loading error:', e);
-            // Show fallback if video fails to load
             const fallback = document.querySelector('.video-fallback');
             if (fallback) {
                 fallback.style.display = 'flex';
@@ -887,7 +858,7 @@ document.addEventListener('DOMContentLoaded', () => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     brandVideo.play().catch(e => {
-                        if (e.name !== 'AbortError') console.log('Play failed:', e);
+                        if (e.name !== 'AbortError') { /* play failed silently */ }
                     });
                 } else {
                     brandVideo.pause();
@@ -958,8 +929,6 @@ const imageObserver = new IntersectionObserver((entries, observer) => {
             };
 
             imageLoader.onerror = () => {
-                // Handle image loading error
-                console.warn('Image failed to load:', img.src);
                 img.style.opacity = '0.5';
                 img.alt = 'Image unavailable';
             };
@@ -1015,7 +984,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Add error handling for all images
         img.addEventListener('error', function () {
-            console.warn('Image failed to load:', this.src);
             this.style.opacity = '0.5';
             this.alt = 'Image unavailable';
         });
@@ -1035,23 +1003,13 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.display = 'block';
         img.draggable = false;
 
-        // Debug hero image loading
-        console.log('Hero image found:', img.src);
-
         // Force load if not loaded
         if (!img.complete) {
-            console.log('Hero image not complete, forcing load...');
             img.onload = () => {
-                console.log('Hero image loaded successfully');
                 img.style.opacity = '1';
                 img.style.display = 'block';
                 img.style.transition = 'opacity 0.3s ease';
             };
-            img.onerror = () => {
-                console.error('Hero image failed to load:', img.src);
-            };
-        } else {
-            console.log('Hero image already loaded');
         }
     });
 });
@@ -1088,8 +1046,7 @@ if ('performance' in window) {
         // Log image loading performance (reduced logging)
         const images = document.querySelectorAll('img');
         const loadedImages = Array.from(images).filter(img => img.complete).length;
-
-        console.log(`Image loading performance: ${loadedImages}/${images.length} images loaded`);
+        // image loading performance tracked silently
     });
 }
 

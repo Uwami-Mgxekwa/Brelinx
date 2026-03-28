@@ -70,6 +70,14 @@
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("VNaptzurXMluqfUZq");
+        })();
+    </script>
+
     <!-- Schema.org structured data -->
     <script type="application/ld+json">
     {
@@ -781,7 +789,7 @@
                 </div>
                 <div class="contact-form-wrapper">
                     <h3>Send us a message</h3>
-                    <div class="contact-form" id="contactForm">
+                    <form class="contact-form" id="contactForm">
                         <div class="form-group">
                             <input type="text" id="name" name="name" placeholder="Your Name" required>
                         </div>
@@ -789,21 +797,21 @@
                             <input type="email" id="email" name="email" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <select id="subject" name="subject" required>
-                                <option value="">Select a topic</option>
-                                <option value="coaching">Programming Coaching</option>
-                                <option value="assignment">Assignment Help</option>
-                                <option value="pricing">Pricing Questions</option>
-                                <option value="other">Other</option>
-                            </select>
+                            <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" required>
                         </div>
                         <div class="form-group">
                             <textarea id="message" name="message" rows="5"
                                 placeholder="Tell us about your programming goals or what you need help with..."
                                 required></textarea>
                         </div>
-                        <button type="button" class="btn btn-primary btn-submit" id="submitBtn">Send Message</button>
-                    </div>
+                        <button type="submit" class="btn btn-primary btn-submit" id="submitBtn">
+                            <span class="btn-text">Send Message</span>
+                            <span class="btn-loading" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i> Sending...
+                            </span>
+                        </button>
+                        <div class="form-status" id="formStatus" style="display: none;"></div>
+                    </form>
                 </div>
             </div>
         </div>

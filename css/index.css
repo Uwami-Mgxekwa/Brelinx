@@ -930,6 +930,25 @@ section {
     display: none;
 }
 
+.verify-link {
+    background: linear-gradient(135deg, #2d8a5f, #1a5c3f);
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.verify-link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: white !important;
+}
+
+.verify-link::after {
+    display: none;
+}
+
 /* Languages Section */
 .languages-section {
     background-color: var(--bg-secondary);
@@ -1210,6 +1229,13 @@ section {
         background: #007acc;
         border-radius: 8px;
         margin-top: 1rem;
+        text-align: center;
+    }
+
+    .verify-link {
+        background: #2d8a5f;
+        border-radius: 8px;
+        margin-top: 0.5rem;
         text-align: center;
     }
 }

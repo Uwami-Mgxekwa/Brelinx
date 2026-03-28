@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Certificate Verification — Brelinx IT Training Academy</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/logo.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/logo.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#2d8a5f">
+
+  <!-- SEO -->
+  <meta name="description" content="Verify the authenticity of your Brelinx IT Training Academy certificate. Enter your certificate number, student ID, and name to confirm legitimacy.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://brelinx.com/verify">
+
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Site CSS -->
+  <link rel="stylesheet" href="./css/index.css">
+
+  <style>
+    /* ── Card ── */
+    .verify-section {
+      padding: 60px 0 80px;
+      background: var(--bg-secondary);
+    }
+    .verify-card {
+      background: var(--bg-primary);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      max-width: 540px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .verify-card-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      padding: 28px 32px;
+    }
+    .verify-card-header h2 {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .verify-card-header p {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.875rem;
+    }
+    .verify-card-body {
+      padding: 32px;
+    }
+
+    /* ── Form fields ── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .field label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .field input {
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      border: 1.5px solid var(--border-color);
+      border-radius: 8px;
+      outline: none;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(45,138,95,0.12);
+    }
+    .field input::placeholder { color: var(--border-color); }
+    .field .hint {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      opacity: 0.8;
+    }
+
+    /* ── Result boxes ── */
+    .result {
+      display: none;
+      margin-top: 24px;
+      border-radius: 10px;
+      padding: 22px 24px;
+      border-width: 2px;
+      border-style: solid;
+    }
+    .result.valid  { background: #edf7f2; border-color: var(--primary-color); }
+    .result.invalid{ background: #fdf0f0; border-color: #c0392b; }
+    .result.warning{ background: #fffbea; border-color: #e6a817; }
+
+    .result-icon  { font-size: 2rem; margin-bottom: 8px; }
+    .result-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+    .result.valid   .result-title { color: var(--primary-dark); }
+    .result.invalid .result-title { color: #922020; }
+    .result.warning .result-title { color: #7a5500; }
+
+    .result-msg { font-size: 0.875rem; line-height: 1.6; }
+    .result.valid   .result-msg { color: var(--primary-dark); }
+    .result.invalid .result-msg { color: #8a2020; }
+    .result.warning .result-msg { color: #7a5500; }
+
+    .result-detail {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+    .detail-row .dk { color: var(--text-secondary); font-weight: 500; }
+    .result.valid   .detail-row .dv { color: var(--primary-dark); font-weight: 600; }
+    .result.invalid .detail-row .dv { color: #922020; font-weight: 600; }
+
+    /* ── Info banner ── */
+    .verify-info {
+      max-width: 540px;
+      margin: 28px auto 0;
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .verify-info i {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .verify-info p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .verify-info a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .verify-info a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .verify-card-body { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-wrapper">
+          <div class="logo">
+            <a href="./index.html" class="logo-text">
+              <span class="logo-brelin">brelin</span><span class="logo-x">x</span>
+            </a>
+          </div>
+          <ul class="nav-menu">
+            <li><a href="./coaching.html#home" class="nav-link">Home</a></li>
+            <li><a href="./coaching.html#coaching" class="nav-link">Coaching</a></li>
+            <li><a href="./coaching.html#contact" class="nav-link">Contact</a></li>
+          </ul>
+          <div class="nav-controls">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+              <i class="fas fa-moon"></i>
+            </button>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+              <span></span><span></span><span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Verify Section -->
+  <section class="verify-section" style="padding-top:100px">
+    <div class="container">
+
+      <div class="verify-card">
+        <div class="verify-card-header">
+          <h2><i class="fas fa-shield-alt" style="margin-right:8px;opacity:.85"></i>Verify a Certificate</h2>
+          <p>Enter the details exactly as they appear on the certificate.</p>
+        </div>
+        <div class="verify-card-body">
+
+          <div class="field">
+            <label>Certificate Number</label>
+            <input id="certNo" type="text" placeholder="e.g. BRX-123456" autocomplete="off"/>
+            <div class="hint"><i class="fas fa-info-circle" style="margin-right:4px"></i>Found at the top-right of the certificate</div>
+          </div>
+
+          <div class="field">
+            <label>Student ID Number</label>
+            <input id="studentId" type="text" placeholder="e.g. 9901015012082" autocomplete="off"/>
+          </div>
+
+          <div class="field">
+            <label>Student Full Name</label>
+            <input id="studentName" type="text" placeholder="e.g. Thabo Mokoena" autocomplete="off"/>
+            <div class="hint"><i class="fas fa-info-circle" style="margin-right:4px"></i>First and last name as it appears on the certificate</div>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%;justify-content:center;gap:8px" onclick="verifyCert()">
+            <i class="fas fa-search"></i> Verify Certificate
+          </button>
+
+          <!-- Result -->
+          <div class="result" id="result">
+            <div class="result-icon" id="resultIcon"></div>
+            <div class="result-title" id="resultTitle"></div>
+            <div class="result-msg" id="resultMsg"></div>
+            <div class="result-detail" id="resultDetail"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="verify-info">
+        <i class="fas fa-question-circle"></i>
+        <p>Can't find your certificate details? <a href="https://wa.me/27785002274?text=Hi%2C%20I%20need%20help%20verifying%20my%20certificate" target="_blank">Contact us on WhatsApp</a> and we'll assist you directly.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <a href="./index.html" class="logo-text">
+              <span class="logo-brelin">brelin</span><span class="logo-x">x</span>
+            </a>
+          </div>
+          <p>Empowering Africa's tech future through quality IT education.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./coaching.html">Coaching</a></li>
+            <li><a href="./index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <ul>
+            <li><i class="fas fa-phone"></i> +27 63 572 2080</li>
+            <li><i class="fab fa-whatsapp"></i> +27 78 500 2274</li>
+            <li><i class="fas fa-map-marker-alt"></i> Johannesburg, South Africa</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span id="currentYear">2026</span> Brelinx (Pty) Ltd. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/index.js"></script>
+  <script>
+    function hashStr(s) {
+      let h = 0;
+      for (let i = 0; i < s.length; i++) { h = Math.imul(31, h) + s.charCodeAt(i) | 0; }
+      return h;
+    }
+
+    function generateCertNo(idNumber) {
+      return 'BRX-' + String(Math.abs(hashStr(idNumber || '0000'))).slice(0, 6);
+    }
+
+    function verifyCert() {
+      const certNo    = document.getElementById('certNo').value.trim().toUpperCase();
+      const idNumber  = document.getElementById('studentId').value.trim();
+      const fullName  = document.getElementById('studentName').value.trim();
+
+      const resultBox    = document.getElementById('result');
+      const resultIcon   = document.getElementById('resultIcon');
+      const resultTitle  = document.getElementById('resultTitle');
+      const resultMsg    = document.getElementById('resultMsg');
+      const resultDetail = document.getElementById('resultDetail');
+
+      if (!certNo || !idNumber || !fullName) {
+        resultBox.className = 'result warning';
+        resultBox.style.display = 'block';
+        resultIcon.textContent = '⚠️';
+        resultTitle.textContent = 'Incomplete Information';
+        resultMsg.textContent = 'Please fill in all three fields before verifying.';
+        resultDetail.innerHTML = '';
+        return;
+      }
+
+      const expected = generateCertNo(idNumber);
+      const isValid  = (certNo === expected);
+
+      resultBox.className = 'result ' + (isValid ? 'valid' : 'invalid');
+      resultBox.style.display = 'block';
+
+      if (isValid) {
+        resultIcon.textContent  = '✅';
+        resultTitle.textContent = 'Certificate Verified';
+        resultMsg.textContent   = 'This certificate is authentic and was issued by Brelinx IT Training Academy.';
+        resultDetail.innerHTML  = `
+          <div class="detail-row"><span class="dk">Certificate No</span><span class="dv">${certNo}</span></div>
+          <div class="detail-row"><span class="dk">Student Name</span><span class="dv">${fullName}</span></div>
+          <div class="detail-row"><span class="dk">ID Number</span><span class="dv">${idNumber}</span></div>
+          <div class="detail-row"><span class="dk">Issued by</span><span class="dv">Brelinx IT Training Academy</span></div>
+          <div class="detail-row"><span class="dk">Status</span><span class="dv">✔ Valid &amp; Authentic</span></div>
+        `;
+      } else {
+        resultIcon.textContent  = '❌';
+        resultTitle.textContent = 'Certificate Not Found';
+        resultMsg.textContent   = 'We could not verify this certificate. Please double-check the certificate number and ID number, or contact Brelinx directly.';
+        resultDetail.innerHTML  = `
+          <div class="detail-row"><span class="dk">Certificate No entered</span><span class="dv">${certNo}</span></div>
+          <div class="detail-row"><span class="dk">Status</span><span class="dv">✘ Not Verified</span></div>
+        `;
+      }
+
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') verifyCert(); });
+  </script>
+</body>
+</html>

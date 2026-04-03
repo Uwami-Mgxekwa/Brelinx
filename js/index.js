@@ -4,7 +4,7 @@
 
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
-const themeIcon = themeToggle.querySelector('i');
+const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
 
 // Check for saved theme preference or default to light mode
 const currentTheme = localStorage.getItem('theme') || 'light';
@@ -29,6 +29,7 @@ if (themeToggle) {
 }
 
 function updateThemeIcon(theme) {
+    if (!themeIcon) return; // Guard clause
     if (theme === 'dark') {
         themeIcon.classList.remove('fa-moon');
         themeIcon.classList.add('fa-sun');
@@ -108,6 +109,7 @@ const header = document.querySelector('.header');
 let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
+    if (!header) return; // Guard clause
     const currentScroll = window.pageYOffset;
 
     if (currentScroll > 100) {
@@ -162,10 +164,11 @@ contactItems.forEach((item, index) => {
 const contactForm = document.getElementById('contactForm');
 const submitBtn = document.getElementById('submitBtn');
 const formStatus = document.getElementById('formStatus');
-const btnText = submitBtn.querySelector('.btn-text');
-const btnLoading = submitBtn.querySelector('.btn-loading');
 
 if (contactForm && submitBtn) {
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -482,7 +485,7 @@ if (chatbotButton) {
     chatbotButton.addEventListener('click', () => {
         chatbotButton.classList.toggle('active');
         chatbotContainer.classList.toggle('active');
-        if (chatbotContainer.classList.contains('active')) {
+        if (chatbotContainer.classList.contains('active') && chatbotInput) {
             chatbotInput.focus();
         }
     });
@@ -564,6 +567,8 @@ function findBestMatch(userMessage) {
 
 // Add message to chat
 function addMessage(message, isUser = false) {
+    if (!chatbotMessages) return; // Guard clause
+    
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
 
@@ -585,6 +590,8 @@ function addMessage(message, isUser = false) {
 
 // Show typing indicator
 function showTyping() {
+    if (!chatbotMessages) return; // Guard clause
+    
     const typingDiv = document.createElement('div');
     typingDiv.className = 'message bot';
     typingDiv.id = 'typing-indicator';
@@ -611,7 +618,7 @@ function removeTyping() {
 
 // Handle user message
 function handleUserMessage(message) {
-    if (!message.trim()) return;
+    if (!message || !message.trim() || !chatbotInput) return;
 
     // Add user message
     addMessage(message, true);

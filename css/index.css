@@ -608,26 +608,26 @@ section {
 }
 
 .portfolio-card {
-    background-color: var(--bg-secondary);
+    background-color: transparent;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     transition: var(--transition);
-    border: 2px solid var(--border-color);
+    border: 2px solid transparent;
     position: relative;
 }
 
 .portfolio-card:hover {
     transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary-color);
+    box-shadow: none;
+    border-color: transparent;
 }
 
 .portfolio-image {
     position: relative;
     height: 250px;
     overflow: hidden;
-    background: var(--bg-tertiary);
+    background: transparent;
 }
 
 .portfolio-image img {
@@ -636,7 +636,7 @@ section {
     object-fit: contain;
     transition: var(--transition);
     padding: 2rem;
-    background: white;
+    background: transparent;
 }
 
 .portfolio-card:hover .portfolio-image img {
@@ -1471,7 +1471,7 @@ section {
 /* Partner logo image styling */
 .partner-logo-img {
     max-width: 100%;
-    max-height: 60px;
+    max-height: 90px;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -3832,4 +3832,21 @@ img.loaded {
     .coaching-hero .stat-label {
         font-size: 0.7rem;
     }
+}
+
+/* ========================================
+   Partner Logos & Portfolio — Grayscale Theme
+   ======================================== */
+
+/* Light mode: render black */
+.partner-logo-img,
+.portfolio-image img {
+    filter: grayscale(100%) brightness(0);
+    transition: transform 0.3s ease;
+}
+
+/* Dark mode: render white */
+[data-theme="dark"] .partner-logo-img,
+[data-theme="dark"] .portfolio-image img {
+    filter: grayscale(100%) brightness(0) invert(1);
 }

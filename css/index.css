@@ -1395,8 +1395,8 @@ section {
 
 .partners-track {
     display: flex;
-    animation: scroll-partners 20s linear infinite;
-    width: calc(200% + 2rem);
+    animation: scroll-partners 35s linear infinite;
+    width: max-content;
     will-change: transform;
 }
 
@@ -1504,7 +1504,7 @@ section {
     }
     
     .partners-track {
-        animation-duration: 20s;
+        animation-duration: 25s;
     }
 }
 

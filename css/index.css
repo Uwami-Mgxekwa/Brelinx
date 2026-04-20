@@ -1934,15 +1934,7 @@ section {
 }
 
 .testimonial-card::before {
-    content: '"';
-    position: absolute;
-    top: -20px;
-    left: 20px;
-    font-size: 8rem;
-    color: var(--primary-color);
-    opacity: 0.1;
-    font-family: Georgia, serif;
-    line-height: 1;
+    display: none;
 }
 
 .testimonial-card:hover {
@@ -1961,8 +1953,8 @@ section {
 }
 
 .testimonial-avatar {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
     border-radius: 50%;
     display: flex;

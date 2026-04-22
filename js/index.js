@@ -493,82 +493,36 @@ if (chatbotButton) {
 
 // Close chatbot when clicking outside
 document.addEventListener('click', (e) => {
-    if (chatbotContainer && chatbotButton && !chatbotContainer.contains(e.target) && !chatbotButton.contains(e.target)) {
+    if (chatbotContainer && chatbotButton &&
+        !chatbotContainer.contains(e.target) &&
+        !chatbotButton.contains(e.target)) {
         chatbotButton.classList.remove('active');
         chatbotContainer.classList.remove('active');
     }
 });
 
-// Knowledge base
-const knowledgeBase = {
-    greetings: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening'],
-    services: ['service', 'services', 'what do you do', 'what can you do', 'offerings'],
-    website: ['website', 'web development', 'web design', 'site', 'online presence'],
-    software: ['software', 'development', 'application', 'custom software'],
-    mobile: ['mobile', 'android', 'ios', 'app', 'mobile app'],
-    coaching: ['coaching', 'learn', 'teach', 'programming', 'code', 'training', 'tutor'],
-    assignment: ['assignment', 'homework', 'help', 'project', 'study', 'university'],
-    cloud: ['cloud', 'aws', 'azure', 'hosting', 'cloud solutions'],
-    security: ['security', 'cybersecurity', 'protect', 'secure'],
-    contact: ['contact', 'phone', 'email', 'reach', 'call', 'whatsapp'],
-    pricing: ['price', 'cost', 'how much', 'pricing', 'rates', 'fee'],
-    location: ['where', 'location', 'address', 'office'],
-    about: ['about', 'who are you', 'company', 'brelinx'],
-    faq: ['faq', 'questions', 'frequently asked', 'common questions'],
-    nationwide: ['nationwide', 'south africa', 'all provinces', 'country', 'national']
-};
-
-const responses = {
-    greetings: "Hello! 👋 Welcome to Brelinx. I'm here to help you with any questions about our IT services across South Africa. What would you like to know?",
-
-    services: "We offer comprehensive business IT services nationwide:\n\n🌐 Website Development\n🖥️ Custom Software Development\n📱 Mobile Applications\n☁️ Cloud Solutions\n🔒 Cybersecurity\n💾 Data Management & Analytics\n🛠️ IT Support 24/7\n🔧 System Integration\n📈 Digital Transformation\n\n🎓 Looking for programming coaching? Visit our Student Portal: brelinx.com/coaching.html\n\nWhich business service interests you?",
-
-    website: "Our Website Development services include:\n\n🌐 Professional, responsive websites\n🌐 Brand showcase design\n🌐 Business growth focused\n🌐 Mobile-optimized\n🌐 SEO-friendly\n\nWe create websites that drive business growth online. Ready to build your online presence?",
-
-    software: "Our Software Development services include:\n\n✨ Custom software solutions\n✨ Web applications\n✨ Enterprise systems\n✨ API development\n✨ System integration\n\nWe design solutions tailored to streamline your business operations and drive growth. Would you like to discuss your project?",
-
-    mobile: "We build exceptional Mobile Applications:\n\n� Natnive iOS & Android apps\n�  Cross-platform solutions\n� U‍ser-friendly interfaces\n📱 Performance optimized\n\nWe create apps that deliver outstanding user experiences. Interested in building an app?",
-
-    coaching: "🎓 Programming Coaching is now on our dedicated Student Portal!\n\nVisit: brelinx.com/coaching.html for:\n\n👨‍💻 One-on-one online sessions\n👨‍💻 Personalized learning pace\n👨‍💻 Languages: Python, JavaScript, Java, React, SQL, HTML/CSS\n👨‍💻 Beginner to advanced levels\n👨‍💻 Real-world projects\n👨‍💻 Flexible scheduling\n👨‍💻 Student-friendly pricing\n\nReady to start your coding journey?",
-
-    assignment: "📚 Assignment Help is available on our Student Portal!\n\nVisit: brelinx.com/coaching.html for:\n\n📚 Understanding complex concepts\n📚 Code debugging & optimization\n📚 Project completion support\n📚 Exam preparation\n📚 Portfolio projects\n📚 Student-friendly rates\n\nWe help you learn and complete your work with confidence. Need help with an assignment?",
-
-    cloud: "Our Cloud Solutions include:\n\n☁️ Cloud infrastructure setup\n☁️ Migration services\n☁️ AWS, Azure, Google Cloud\n☁️ Scalable architecture\n☁️ Cost optimization\n\nTransform your business with modern cloud technology!",
-
-    security: "Cybersecurity Services:\n\n� Secu+rity audits\n🔒 Threat monitoring\n🔒 Data protection\n🔒 Compliance support\n🔒 Incident response\n\nProtect your business with comprehensive security solutions!",
-
-    contact: "Get in touch with us:\n\n📞 Phone: +27 63 572 2080\n💬 WhatsApp: +27 78 500 2274\n�  Location: The Glen Road, Johannesburg, GP 2090\n\nWe serve clients across South Africa! You can also fill out our contact form on the website. How would you prefer to reach us?",
-
-    pricing: "Our pricing varies based on:\n\n💰 Project scope and complexity\n💰 Service type\n💰 Timeline\n💰 Support requirements\n\nFor coaching: We offer flexible hourly rates.\nFor businesses: Competitive rates across South Africa.\n\nContact us for a personalized quote! Would you like to discuss your specific needs?",
-
-    location: "We're located at:\n\n📍 The Glen Road\nJohannesburg, GP 2090\nSouth Africa 🇿🇦\n\nWe serve clients nationwide across South Africa with online services. Visit our Contact section for the map!",
-
-    about: "Brelinx is your trusted business IT partner across South Africa! 🚀\n\nWe're passionate about delivering innovative IT services and software solutions that transform businesses nationwide.\n\n✅ 100+ Business Projects Completed\n✅ 50+ Enterprise Clients\n✅ 24/7 Business Support Available\n✅ 6+ Years Industry Experience\n\n🎓 Students: Visit brelinx.com/coaching.html for programming coaching!\n\nOur commitment to excellence and customer satisfaction sets us apart. What would you like to know more about?",
-
-    faq: "Check out our FAQ section for common questions about:\n\n❓ IT services across South Africa\n❓ Programming coaching for students\n❓ Software development pricing\n❓ Working with small businesses\n❓ University assignment help\n❓ What makes us different\n\nYou can find detailed answers in the FAQ section on our website!",
-
-    nationwide: "Yes! We provide services nationwide across South Africa:\n\n🇿🇦 All provinces covered\n🇿🇦 Remote online services\n🇿🇦 Local support from Johannesburg\n🇿🇦 Flexible scheduling for all time zones\n\nWhether you're in Cape Town, Durban, Pretoria, or anywhere in SA - we're here to help!",
-
-    default: "I'm here to help with business IT services! I can answer questions about:\n\n• Professional IT services\n• Website & software development\n• Mobile applications\n• Cloud solutions & cybersecurity\n• Business pricing & consultations\n• Nationwide service coverage\n\n🎓 Students: Visit brelinx.com/coaching.html for programming coaching!\n\nWhat would you like to know? Or chat with us directly on WhatsApp!"
-};
-
-// Find best match
+// Find best match using knowledgeBase from chatbot-responses.js
 function findBestMatch(userMessage) {
-    const message = userMessage.toLowerCase();
+    const message = userMessage.toLowerCase().trim();
 
-    for (const [category, keywords] of Object.entries(knowledgeBase)) {
+    // Check multi-word phrases first (longer matches take priority)
+    const sorted = Object.entries(knowledgeBase).sort((a, b) => {
+        const aMax = Math.max(...a[1].map(k => k.length));
+        const bMax = Math.max(...b[1].map(k => k.length));
+        return bMax - aMax;
+    });
+
+    for (const [category, keywords] of sorted) {
         if (keywords.some(keyword => message.includes(keyword))) {
             return category;
         }
     }
-
     return 'default';
 }
 
 // Add message to chat
 function addMessage(message, isUser = false) {
-    if (!chatbotMessages) return; // Guard clause
-    
+    if (!chatbotMessages) return;
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
 
@@ -583,15 +537,13 @@ function addMessage(message, isUser = false) {
 
     messageDiv.appendChild(avatar);
     messageDiv.appendChild(content);
-
     chatbotMessages.appendChild(messageDiv);
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 }
 
 // Show typing indicator
 function showTyping() {
-    if (!chatbotMessages) return; // Guard clause
-    
+    if (!chatbotMessages) return;
     const typingDiv = document.createElement('div');
     typingDiv.className = 'message bot';
     typingDiv.id = 'typing-indicator';
@@ -610,7 +562,6 @@ function showTyping() {
     chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 }
 
-// Remove typing indicator
 function removeTyping() {
     const typing = document.getElementById('typing-indicator');
     if (typing) typing.remove();
@@ -618,45 +569,37 @@ function removeTyping() {
 
 // Handle user message
 function handleUserMessage(message) {
-    if (!message || !message.trim() || !chatbotInput) return;
-
-    // Add user message
+    if (!message || !message.trim()) return;
     addMessage(message, true);
-    chatbotInput.value = '';
-
-    // Show typing
+    if (chatbotInput) chatbotInput.value = '';
     showTyping();
 
-    // Simulate thinking delay
     setTimeout(() => {
         removeTyping();
         const category = findBestMatch(message);
-        const response = responses[category];
+        const response = responses[category] || responses['default'];
         addMessage(response);
-
-        // Add quick replies after certain responses
-        if (category === 'services' || category === 'default') {
+        if (category === 'services' || category === 'default' || category === 'greetings') {
             addQuickReplies();
         }
-    }, 1000 + Math.random() * 1000);
+    }, 800 + Math.random() * 700);
 }
 
 // Add quick replies
 function addQuickReplies() {
+    if (!chatbotMessages) return;
     const lastMessage = chatbotMessages.lastElementChild;
     if (lastMessage && lastMessage.classList.contains('bot')) {
         const quickRepliesDiv = document.createElement('div');
         quickRepliesDiv.className = 'quick-replies';
         quickRepliesDiv.innerHTML = `
-            <button class="quick-reply-btn" data-message="Tell me about programming coaching">Coaching</button>
-            <button class="quick-reply-btn" data-message="How can I contact you?">Contact</button>
+            <button class="quick-reply-btn" data-message="Tell me about coaching">Coaching</button>
             <button class="quick-reply-btn" data-message="What are your prices?">Pricing</button>
+            <button class="quick-reply-btn" data-message="How can I contact you?">Contact</button>
+            <button class="quick-reply-btn" data-message="Show me your portfolio">Portfolio</button>
         `;
-
         const messageContent = lastMessage.querySelector('.message-content') || lastMessage.lastElementChild;
         messageContent.parentElement.appendChild(quickRepliesDiv);
-
-        // Add event listeners to new quick reply buttons
         quickRepliesDiv.querySelectorAll('.quick-reply-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 handleUserMessage(btn.dataset.message);

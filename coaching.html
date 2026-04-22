@@ -931,6 +931,38 @@
     </div>
 
     <script src="./js/index.js"></script>
+
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent">
+        <div class="cookie-banner-text">
+            <strong>🍪 We use cookies</strong>
+            We use Google Analytics to understand how visitors use our site. This helps us improve your experience. By clicking "Accept", you consent to our use of cookies in accordance with POPIA and GDPR. No personal data is sold or shared with third parties.
+        </div>
+        <div class="cookie-banner-actions">
+            <button class="cookie-btn-decline" id="cookieDecline">Decline</button>
+            <button class="cookie-btn-accept" id="cookieAccept">Accept</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const banner = document.getElementById('cookieBanner');
+            const consent = localStorage.getItem('brelinx_cookie_consent');
+            if (!consent) {
+                setTimeout(() => banner.classList.add('visible'), 800);
+            }
+            document.getElementById('cookieAccept').addEventListener('click', () => {
+                localStorage.setItem('brelinx_cookie_consent', 'accepted');
+                banner.classList.remove('visible');
+            });
+            document.getElementById('cookieDecline').addEventListener('click', () => {
+                localStorage.setItem('brelinx_cookie_consent', 'declined');
+                banner.classList.remove('visible');
+                window['ga-disable-G-8HB9C4SCVP'] = true;
+            });
+        })();
+    </script>
+
 </body>
 
 </html>

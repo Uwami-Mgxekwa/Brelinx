@@ -103,6 +103,9 @@ RewriteRule \.(png|jpg|jpeg|gif|svg|webp)$ /assets/watermark.png [R,L]
 # Disable directory browsing
 Options -Indexes
 
+# Custom error pages
+ErrorDocument 404 /404.html
+
 # Protect sensitive files
 <Files ~ "^\.">
     Order allow,deny
